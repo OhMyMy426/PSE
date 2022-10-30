@@ -19,12 +19,12 @@ void calculateF_easy(ParticleContainer &particleContainer);
 /**
  * calculate the position for all particles
  */
-void calculateX();
+void calculateX(ParticleContainer& particleContainer);
 
 /**
  * calculate the position for all particles
  */
-void calculateV();
+void calculateV(ParticleContainer& particleContainer);
 
 /**
  * plot the particles to a xyz-file
@@ -59,11 +59,11 @@ int main(int argc, char *argsv[]) {
   // for this loop, we assume: current x, current f and current v are known
   while (current_time < end_time) {
     // calculate new x
-    calculateX();
+    calculateX(particleContainer);
     // calculate new f
     calculateF_easy(particleContainer);
     // calculate new v
-    calculateV();
+    calculateV(particleContainer);
 
     iteration++;
     if (iteration % 10 == 0) {
@@ -108,16 +108,34 @@ void calculateF_easy(ParticleContainer &particleContainer) {
     }
 }
 
-void calculateX() {
-  for (auto &p : particles) {
-    // @TODO: insert calculation of position updates here!
-  }
+void calculateX(ParticleContainer& particleContainer) {
+    std::array<double, 3> x_arg;
+    std::array<double, 3> v_arg;
+    for (int i = 0; i <= particleContainer.getParticle_counter(); ++i) {
+        // @TODO: insert calculation of position updates here!
+        for (int j = 0; j < 3; ++j) {
+            x_arg[j] = particleContainer.getParticles().at(i).getX().at(j) + delta_t * particleContainer.getParticles().at(i).getV().at(j) + delta_t * delta_t * particleContainer.getParticles().at(i).getF().at(j)/2 * particleContainer.getParticles().at(i).getM();
+        }
+        particleContainer.getParticles().at(i).setX(x_arg);
+    }
 }
 
-void calculateV() {
-  for (auto &p : particles) {
-    // @TODO: insert calculation of veclocity updates here!
-  }
+void calculateV(ParticleContainer& particleContainer) {
+    for (int a = 0; a <= particleContainer.getParticle_counter(); ++a) {
+        // @TODO: insert calculation of position updates here!
+        std::array<double, 3> f;
+        std::array<double, 3> v;
+
+        
+        for (int c = 0; c < f.size(); c++) {
+            f[c] = particleContainer.getParticles().at(a).getF().at(c) + particleContainer.getParticles().at(a).getOldF().at(c);
+        }
+        
+        for (int i = 0; i < f.size(); i++) {
+            v[i] = particleContainer.getParticles().at(a).getV().at(i) + (delta_t * (f[i] / (2 * particleContainer.getParticles().at(a).getM())));
+        }
+        particleContainer.getParticles().at(a).setV(v);
+    }
 }
 
 void plotParticles(int iteration) {
