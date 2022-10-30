@@ -35,7 +35,7 @@ constexpr double delta_t = 0.014;
 // TODO: what data structure to pick?
 std::list<Particle> particles;
 
-int main(int argc, char *argsv[]) {
+int main(int argc, char* argsv[]) {
 
   std::cout << "Hello from MolSim for PSE!" << std::endl;
   if (argc != 2) {
@@ -76,21 +76,29 @@ void calculateF() {
   std::list<Particle>::iterator iterator;
   iterator = particles.begin();
 
-  for (auto &p1 : particles) {
-    for (auto &p2 : particles) {
+  for (auto& p1 : particles) {
+    for (auto& p2 : particles) {
       // @TODO: insert calculation of forces here!
     }
   }
 }
 
 void calculateX() {
-  for (auto &p : particles) {
+  for (auto& p : particles) {
     // @TODO: insert calculation of position updates here!
+    std::array<double, 3> x_arg;
+    std::array<double, 3> v_arg;
+    for (int i = 0; i < 3;i++) {
+      x_arg[i] = p.getX()[i] + delta_t * p.getV()[i] + delta_t * delta_t * p.getF()[i] / 2 * p.getM();
+      v_arg[i] = p.getV()[i];
+    }
+    Particle other(x_arg, v_arg, p.getM(), p.getType());
+    p = other;
   }
 }
 
 void calculateV() {
-  for (auto &p : particles) {
+  for (auto& p : particles) {
     // @TODO: insert calculation of veclocity updates here!
   }
 }
