@@ -12,11 +12,14 @@
 #include <iostream>
 #include <sstream>
 
+#include <unordered_map>
+
+
 FileReader::FileReader() = default;
 
 FileReader::~FileReader() = default;
 
-void FileReader::readFile(std::list<Particle> &particles, char *filename) {
+void FileReader::readFile(std::unordered_map<int, Particle> &particles, char *filename, int &particle_counter) { //changed FileReader arguments
   std::array<double, 3> x;
   std::array<double, 3> v;
   double m;
@@ -30,7 +33,7 @@ void FileReader::readFile(std::list<Particle> &particles, char *filename) {
     getline(input_file, tmp_string);
     std::cout << "Read line: " << tmp_string << std::endl;
 
-    while (tmp_string.empty() or tmp_string[0] == '#') {
+    while (tmp_string.empty() || tmp_string[0] == '#') {
       getline(input_file, tmp_string);
       std::cout << "Read line: " << tmp_string << std::endl;
     }
@@ -57,7 +60,8 @@ void FileReader::readFile(std::list<Particle> &particles, char *filename) {
         exit(-1);
       }
       datastream >> m;
-      particles.emplace_back(x, v, m);
+      particles.emplace(particle_counter, Particle(x, v, m, 0));
+      ++particle_counter;
 
       getline(input_file, tmp_string);
       std::cout << "Read line: " << tmp_string << std::endl;

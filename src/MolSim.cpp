@@ -6,12 +6,15 @@
 #include <iostream>
 #include <list>
 
+#include <unordered_map>
+#include "ParticleContainer.h"
+
 /**** forward declaration of the calculation functions ****/
 
 /**
  * calculate the force for all particles
  */
-void calculateF();
+void calculateF_easy(ParticleContainer &particleContainer);
 
 /**
  * calculate the position for all particles
@@ -33,7 +36,8 @@ constexpr double end_time = 1000;
 constexpr double delta_t = 0.014;
 
 // TODO: what data structure to pick?
-std::list<Particle> particles;
+std::unordered_map<int, Particle> particles;
+int particle_counter = 0;
 
 int main(int argc, char *argsv[]) {
 
@@ -44,7 +48,9 @@ int main(int argc, char *argsv[]) {
   }
 
   FileReader fileReader;
-  fileReader.readFile(particles, argsv[1]);
+  fileReader.readFile(particles, argsv[1], particle_counter);
+  ParticleContainer particleContainer(particles, particle_counter);
+  
 
   double current_time = start_time;
 
@@ -55,7 +61,7 @@ int main(int argc, char *argsv[]) {
     // calculate new x
     calculateX();
     // calculate new f
-    calculateF();
+    calculateF_easy(particleContainer);
     // calculate new v
     calculateV();
 
@@ -72,15 +78,34 @@ int main(int argc, char *argsv[]) {
   return 0;
 }
 
-void calculateF() {
-  std::list<Particle>::iterator iterator;
-  iterator = particles.begin();
+void calculateF_easy(ParticleContainer &particleContainer) {
+    particleContainer.getParticles().at(0).setOldF(particleContainer.getParticles().at(0).getF());
+    particleContainer.getParticles().at(0).setF({ 0.,0.,0. });
 
-  for (auto &p1 : particles) {
-    for (auto &p2 : particles) {
-      // @TODO: insert calculation of forces here!
+
+    for (int i = 0; i <= particleContainer.getParticle_counter() / 2; ++i)
+    {
+        for (int j = i + 1; j <= particleContainer.getParticle_counter(); ++j) {
+            if (i == 1) {
+                particleContainer.getParticles().at(j).setOldF(particleContainer.getParticles().at(j).getF());
+                particleContainer.getParticles().at(j).setF({ 0.,0.,0. });
+
+            }
+            std::array<double, 3> tmpX = { particleContainer.getParticles().at(i).getX().at(0) - particleContainer.getParticles().at(j).getX().at(0),
+                                          particleContainer.getParticles().at(i).getX().at(1) - particleContainer.getParticles().at(j).getX().at(1),
+                                          particleContainer.getParticles().at(i).getX().at(2) - particleContainer.getParticles().at(j).getX().at(2)
+            };
+            double tmpM = particleContainer.getParticles().at(j).getM() * particleContainer.getParticles().at(i).getM();
+            double tmpdist = sqrt(tmpX.at(0) * tmpX.at(0) + tmpX.at(1) * tmpX.at(1) + tmpX.at(2) * tmpX.at(2));
+            tmpdist = tmpdist * tmpdist * tmpdist;
+            for (auto a : tmpX) {
+                a = -a;
+            }
+            particleContainer.getParticles().at(i).setF(particleContainer.getParticles().at(i).getF() + (tmpM/tmpdist)*tmpX);
+            particleContainer.getParticles().at(j).setF(particleContainer.getParticles().at(j).getF() - (tmpM / tmpdist) * tmpX);
+
+        }
     }
-  }
 }
 
 void calculateX() {
@@ -98,6 +123,8 @@ void calculateV() {
 void plotParticles(int iteration) {
 
   std::string out_name("MD_vtk");
+
+  
 
   outputWriter::XYZWriter writer;
   writer.plotParticles(particles, out_name, iteration);

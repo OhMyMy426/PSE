@@ -61,9 +61,14 @@ public:
 
   const std::array<double, 3> &getV() const;
 
-  const std::array<double, 3> &getF() const;
+  const std::array<double, 3>& getF() const;
 
   const std::array<double, 3> &getOldF() const;
+
+  void setX(std::array<double, 3> set);
+  void setV(std::array<double, 3> set);
+  void setF(std::array<double, 3> set);
+  void setOldF(std::array<double, 3> set);
 
   double getM() const;
 

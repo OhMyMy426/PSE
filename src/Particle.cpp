@@ -10,12 +10,18 @@
 #include <iostream>
 #include "utils/ArrayUtils.h"
 
-Particle::Particle(int type_arg) {
+/*Particle::Particle(int type_arg) {
   type = type_arg;
   std::cout << "Particle generated!" << std::endl;
   f = {0., 0., 0.};
   old_f = {0., 0., 0.};
 }
+*/
+Particle::Particle(int type_arg)
+    :x({ 0., 0., 0. }), v({ 0., 0., 0. }), f({ 0., 0., 0. }), old_f({ 0., 0., 0. }), m(0.), type(type_arg)
+    {
+    std::cout << "Particle generated!" << std::endl;
+    }
 
 Particle::Particle(const Particle &other) {
   x = other.x;
@@ -28,7 +34,7 @@ Particle::Particle(const Particle &other) {
 }
 
 // Todo: maybe use initializater list instead of copy?
-Particle::Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg,
+/*Particle::Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg,
                    double m_arg, int type_arg) {
   x = x_arg;
   v = v_arg;
@@ -38,6 +44,13 @@ Particle::Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg,
   old_f = {0., 0., 0.};
   std::cout << "Particle generated!" << std::endl;
 }
+*/
+Particle::Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg,
+    double m_arg, int type_arg)
+    :x(x_arg), v(v_arg), f({ 0., 0., 0. }), old_f({ 0., 0., 0. }), m(m_arg), type(type_arg)
+    {
+    std::cout << "Particle generated!" << std::endl;
+    }
 
 Particle::~Particle() { std::cout << "Particle destructed!" << std::endl; }
 
@@ -53,6 +66,19 @@ double Particle::getM() const { return m; }
 
 int Particle::getType() const { return type; }
 
+void Particle::setX(std::array<double, 3> set) {
+    x = set;
+}
+void Particle::setV(std::array<double, 3> set) {
+    v = set;
+}
+void Particle::setF(std::array<double, 3> set) {
+    f = set;
+}
+void Particle::setOldF(std::array<double, 3> set) {
+    old_f = set;
+}
+
 std::string Particle::toString() const {
   std::stringstream stream;
   stream << "Particle: X:" << x << " v: " << v << " f: " << f
@@ -61,8 +87,8 @@ std::string Particle::toString() const {
 }
 
 bool Particle::operator==(Particle &other) {
-  return (x == other.x) and (v == other.v) and (f == other.f) and
-         (type == other.type) and (m == other.m) and (old_f == other.old_f);
+  return (x == other.x) && (v == other.v) && (f == other.f) &&
+         (type == other.type) && (m == other.m) && (old_f == other.old_f);
 }
 
 std::ostream &operator<<(std::ostream &stream, Particle &p) {
