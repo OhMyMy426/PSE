@@ -10,6 +10,7 @@
 #include "Particle.h"
 
 #include <list>
+#include <unordered_map>
 
 class FileReader {
 

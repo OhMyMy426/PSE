@@ -110,7 +110,7 @@ void calculateF_easy(ParticleContainer &particleContainer) {
 
 void calculateX(ParticleContainer& particleContainer) {
     std::array<double, 3> x_arg;
-    std::array<double, 3> v_arg;
+    
     for (int i = 0; i <= particleContainer.getParticle_counter(); ++i) {
         // @TODO: insert calculation of position updates here!
         for (int j = 0; j < 3; ++j) {
