@@ -56,6 +56,7 @@ int Particle::getType() const { return type; }
 
 void Particle::setv(std::array<double, 3> v1)
 {
+
     v=v1;
 }
 
