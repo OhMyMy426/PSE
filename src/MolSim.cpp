@@ -98,9 +98,20 @@ void calculateX() {
 }
 
 void calculateV() {
-  for (auto& p : particles) {
-    // @TODO: insert calculation of veclocity updates here!
-  }
+    for (auto &p : particles) {
+        // @TODO: insert calculation of position updates here!
+        std::array<double, 3> f;
+        std::array<double, 3> v;
+        int c=0;
+        for (c = 0; c < f.size(); c++) {
+            f[c] = p.getF()[c] + p.getOldF()[c];
+        }
+        int i=0;
+        for (i= 0; i < f.size(); i++) {
+            v[c] = p.getV()[i]+(delta_t*(f[i]/(2*p.getM())));
+        }
+        p.setv(v);
+    }
 }
 
 void plotParticles(int iteration) {
