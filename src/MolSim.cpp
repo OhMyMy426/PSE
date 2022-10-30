@@ -102,6 +102,7 @@ void calculateV() {
         // @TODO: insert calculation of position updates here!
         std::array<double, 3> f;
         std::array<double, 3> v;
+
         int c=0;
         for (c = 0; c < f.size(); c++) {
             f[c] = p.getF()[c] + p.getOldF()[c];
