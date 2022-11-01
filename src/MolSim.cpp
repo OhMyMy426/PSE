@@ -14,17 +14,17 @@
 /**
  * calculate the force for all particles
  */
-void calculateF_easy(ParticleContainer &particleContainer);
+void calculateF_easy();
 
 /**
  * calculate the position for all particles
  */
-void calculateX(ParticleContainer& particleContainer);
+void calculateX();
 
 /**
  * calculate the position for all particles
  */
-void calculateV(ParticleContainer& particleContainer);
+void calculateV();
 
 /**
  * plot the particles to a xyz-file
@@ -38,8 +38,11 @@ constexpr double delta_t = 0.014;
 // TODO: what data structure to pick?
 std::unordered_map<int, Particle> particles;
 int particle_counter = 0;
+static ParticleContainer particleContainer(particles, particle_counter);
 
 int main(int argc, char *argsv[]) {
+
+
 
   std::cout << "Hello from MolSim for PSE!" << std::endl;
   if (argc != 2) {
@@ -48,8 +51,9 @@ int main(int argc, char *argsv[]) {
   }
 
   FileReader fileReader;
-  fileReader.readFile(particles, argsv[1], particle_counter);
-  ParticleContainer particleContainer(particles, particle_counter);
+  fileReader.readFile(particleContainer, argsv[1]);
+  std::cout << "done" << std::endl;
+
   
 
   double current_time = start_time;
@@ -59,11 +63,11 @@ int main(int argc, char *argsv[]) {
   // for this loop, we assume: current x, current f and current v are known
   while (current_time < end_time) {
     // calculate new x
-    calculateX(particleContainer);
+    calculateX();
     // calculate new f
-    calculateF_easy(particleContainer);
+    calculateF_easy();
     // calculate new v
-    calculateV(particleContainer);
+    calculateV();
 
     iteration++;
     if (iteration % 10 == 0) {
@@ -78,14 +82,14 @@ int main(int argc, char *argsv[]) {
   return 0;
 }
 
-void calculateF_easy(ParticleContainer &particleContainer) {
+void calculateF_easy() {
     particleContainer.getParticles().at(0).setOldF(particleContainer.getParticles().at(0).getF());
     particleContainer.getParticles().at(0).setF({ 0.,0.,0. });
 
 
-    for (int i = 0; i <= particleContainer.getParticle_counter() / 2; ++i)
+    for (int i = 0; i < particleContainer.getParticle_counter() / 2; ++i)
     {
-        for (int j = i + 1; j <= particleContainer.getParticle_counter(); ++j) {
+        for (int j = i + 1; j < particleContainer.getParticle_counter(); ++j) {
             if (i == 1) {
                 particleContainer.getParticles().at(j).setOldF(particleContainer.getParticles().at(j).getF());
                 particleContainer.getParticles().at(j).setF({ 0.,0.,0. });
@@ -108,20 +112,22 @@ void calculateF_easy(ParticleContainer &particleContainer) {
     }
 }
 
-void calculateX(ParticleContainer& particleContainer) {
+void calculateX() {
     std::array<double, 3> x_arg;
     
-    for (int i = 0; i <= particleContainer.getParticle_counter(); ++i) {
+    for (int i = 0; i < particleContainer.getParticle_counter(); ++i) {
         // @TODO: insert calculation of position updates here!
+
         for (int j = 0; j < 3; ++j) {
             x_arg[j] = particleContainer.getParticles().at(i).getX().at(j) + delta_t * particleContainer.getParticles().at(i).getV().at(j) + delta_t * delta_t * particleContainer.getParticles().at(i).getF().at(j)/2 * particleContainer.getParticles().at(i).getM();
         }
+
         particleContainer.getParticles().at(i).setX(x_arg);
     }
 }
 
-void calculateV(ParticleContainer& particleContainer) {
-    for (int a = 0; a <= particleContainer.getParticle_counter(); ++a) {
+void calculateV() {
+    for (int a = 0; a < particleContainer.getParticle_counter(); ++a) {
         // @TODO: insert calculation of position updates here!
         std::array<double, 3> f;
         std::array<double, 3> v;
@@ -145,5 +151,6 @@ void plotParticles(int iteration) {
   
 
   outputWriter::XYZWriter writer;
-  writer.plotParticles(particles, out_name, iteration);
+  //writer.plotParticles(particles, out_name, iteration);
+  writer.plotParticles(particleContainer.getParticles(), out_name, iteration);
 }

@@ -16,6 +16,6 @@ public:
 
 	ParticleContainer(const ParticleContainer& other);
 	virtual ~ParticleContainer();
-
+    void setParticleCounter(int x);
 
 };

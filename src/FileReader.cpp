@@ -13,13 +13,14 @@
 #include <sstream>
 
 #include <unordered_map>
+#include "ParticleContainer.h"
 
 
 FileReader::FileReader() = default;
 
 FileReader::~FileReader() = default;
 
-void FileReader::readFile(std::unordered_map<int, Particle> &particles, char *filename, int &particle_counter) { //changed FileReader arguments
+void FileReader::readFile(ParticleContainer& particleContainer, char *filename) { //changed FileReader arguments
   std::array<double, 3> x;
   std::array<double, 3> v;
   double m;
@@ -60,8 +61,10 @@ void FileReader::readFile(std::unordered_map<int, Particle> &particles, char *fi
         exit(-1);
       }
       datastream >> m;
-      particles.emplace(particle_counter, Particle(x, v, m, 0));
-      ++particle_counter;
+      std::cout << "particleInsert"<< std::endl;
+
+      particleContainer.getParticles().emplace(particleContainer.getParticle_counter(), Particle (x, v, m, 0));
+      particleContainer.setParticleCounter(particleContainer.getParticle_counter()+1);
 
       getline(input_file, tmp_string);
       std::cout << "Read line: " << tmp_string << std::endl;

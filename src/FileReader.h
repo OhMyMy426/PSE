@@ -11,6 +11,7 @@
 
 #include <list>
 #include <unordered_map>
+#include "ParticleContainer.h"
 
 class FileReader {
 
@@ -18,5 +19,5 @@ public:
   FileReader();
   virtual ~FileReader();
 
-  void readFile(std::unordered_map<int, Particle> &particles, char* filename, int &particle_counter);
+  void readFile(ParticleContainer& particleContainer, char* filename);
 };

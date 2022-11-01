@@ -26,3 +26,6 @@
 	{
 		std::cout << "ParticleContainer generated" << std::endl;
 	}
+    void ParticleContainer::setParticleCounter(int x) {
+        particle_counter = x;
+}
