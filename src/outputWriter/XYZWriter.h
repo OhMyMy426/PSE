@@ -22,7 +22,7 @@ public:
 
   virtual ~XYZWriter();
 
-  void plotParticles(std::unordered_map<int, Particle> particles, const std::string &filename,
+  void plotParticles(std::unordered_map<int, Particle>& particles, const std::string &filename,
                      int iteration);
 };
 

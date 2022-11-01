@@ -71,7 +71,8 @@ int main(int argc, char *argsv[]) {
 
     iteration++;
     if (iteration % 10 == 0) {
-      plotParticles(iteration);
+
+        plotParticles(iteration);
     }
     std::cout << "Iteration " << iteration << " finished." << std::endl;
 
@@ -133,11 +134,11 @@ void calculateV() {
         std::array<double, 3> v;
 
         
-        for (int c = 0; c < f.size(); c++) {
+        for (size_t c = 0; c < f.size(); c++) {
             f[c] = particleContainer.getParticles().at(a).getF().at(c) + particleContainer.getParticles().at(a).getOldF().at(c);
         }
         
-        for (int i = 0; i < f.size(); i++) {
+        for (size_t i = 0; i < f.size(); i++) {
             v[i] = particleContainer.getParticles().at(a).getV().at(i) + (delta_t * (f[i] / (2 * particleContainer.getParticles().at(a).getM())));
         }
         particleContainer.getParticles().at(a).setV(v);

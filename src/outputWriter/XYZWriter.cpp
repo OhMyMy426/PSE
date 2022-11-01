@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <sstream>
 #include <unordered_map>
+#include <iostream>
 
 namespace outputWriter {
 
@@ -16,7 +17,7 @@ XYZWriter::XYZWriter() = default;
 
 XYZWriter::~XYZWriter() = default;
 
-void XYZWriter::plotParticles(std::unordered_map<int, Particle> particles,
+void XYZWriter::plotParticles(std::unordered_map<int, Particle>& particles,
                               const std::string &filename, int iteration) {
   std::ofstream file;
   std::stringstream strstr;
@@ -29,11 +30,11 @@ void XYZWriter::plotParticles(std::unordered_map<int, Particle> particles,
        << std::endl;
 
   for (auto &p : particles) {
-    std::array<double, 3> x = p.second.getX();
+//    std::array<double, 3> x = p.second.getX();
     file << "Ar ";
     file.setf(std::ios_base::showpoint);
 
-    for (auto &xi : x) {
+    for (auto &xi : p.second.getX()) {
       file << xi << " ";
     }
 
