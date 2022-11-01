@@ -18,5 +18,5 @@ public:
   FileReader();
   virtual ~FileReader();
 
-  void FileReader::readFile(std::unordered_map<int, Particle> &particles, char* filename, int &particle_counter);
+  void readFile(std::unordered_map<int, Particle> &particles, char* filename, int &particle_counter);
 };
