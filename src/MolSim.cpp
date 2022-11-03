@@ -21,12 +21,12 @@ void calculateF_easy();
 /**
  * calculate the position for all particles
  */
-void calculateX(double& delta_t);
+void calculateX(const double& delta_t);
 
 /**
  * calculate the position for all particles
  */
-void calculateV(double& delta_t);
+void calculateV(const double& delta_t);
 
 /**
  * plot the particles to a xyz-file
@@ -55,9 +55,9 @@ int main(int argc, char *argsv[]) {
   fileReader.readFile(particleContainer, argsv[1]);
   std::cout << "done" << std::endl;
 
- constexpr double end_time = atof(argsv[2]);
- constexpr double delta_t = atof(argsv[3]);
-
+ const double end_time = strtod(argsv[2], nullptr);
+ const double delta_t = strtod(argsv[3], nullptr);
+ 
   double current_time = start_time;
 
   int iteration = 0;
@@ -115,7 +115,7 @@ void calculateF_easy() {
     }
 }
 
-void calculateX(double& delta_t) {
+void calculateX(const double& delta_t) {
     std::array<double, 3> x_arg;
     
     for (int i = 0; i < particleContainer.getParticle_counter(); ++i) {
@@ -129,7 +129,7 @@ void calculateX(double& delta_t) {
     }
 }
 
-void calculateV(double& delta_t) {
+void calculateV(const double& delta_t) {
     for (int a = 0; a < particleContainer.getParticle_counter(); ++a) {
         // @TODO: insert calculation of position updates here!
         std::array<double, 3> f;
