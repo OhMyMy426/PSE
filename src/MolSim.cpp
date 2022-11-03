@@ -114,7 +114,7 @@ void calculateF() {
             double tmpdist1 = tmpdist * tmpdist * tmpdist;
             
 
-            for (auto a : tmpX) {
+            for (auto a& : tmpX) {
                 a = -a;
             }
             
