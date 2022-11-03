@@ -1,4 +1,5 @@
 .idea/
 cmake-build-*
 *.vtu
-
+/doxygen_docs
+/doxygen.tag
