@@ -16,7 +16,7 @@
 /**
  * calculate the force for all particles
  */
-void calculateF_easy();
+void calculateF();
 
 /**
  * calculate the position for all particles
@@ -72,7 +72,7 @@ int main(int argc, char *argsv[]) {
     calculateX(delta_t);
 
     // calculate new f
-    calculateF_easy();
+    calculateF();
   
    
     // calculate new v
@@ -93,7 +93,7 @@ int main(int argc, char *argsv[]) {
   return 0;
 }
 
-void calculateF_easy() {
+void calculateF() {
     particleContainer.getParticles().at(0).setOldF(particleContainer.getParticles().at(0).getF());
     particleContainer.getParticles().at(0).setF({ 0.,0.,0. });
 
@@ -114,7 +114,7 @@ void calculateF_easy() {
             double tmpdist1 = tmpdist * tmpdist * tmpdist;
             
 
-            for (auto& a : tmpX) {
+            for (auto a : tmpX) {
                 a = -a;
             }
             
