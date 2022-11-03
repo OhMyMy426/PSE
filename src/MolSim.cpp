@@ -65,12 +65,14 @@ int main(int argc, char *argsv[]) {
   // for this loop, we assume: current x, current f and current v are known
   while (current_time < end_time) {
     
-    // calculate new f
-    calculateF_easy();
+    
     
 
     // calculate new x
     calculateX(delta_t);
+
+    // calculate new f
+    calculateF_easy();
   
    
     // calculate new v
@@ -112,9 +114,9 @@ void calculateF_easy() {
             double tmpdist1 = tmpdist * tmpdist * tmpdist;
             
 
-            tmpX.at(0) = - tmpX.at(0);
-            tmpX.at(1) = -tmpX.at(1);
-            tmpX.at(2) = -tmpX.at(2);
+            for (auto& a : tmpX) {
+                a = -a;
+            }
             
 
             particleContainer.getParticles().at(i).setF(particleContainer.getParticles().at(i).getF() + (tmpM/tmpdist1)*tmpX);
