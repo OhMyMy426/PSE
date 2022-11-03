@@ -64,12 +64,18 @@ int main(int argc, char *argsv[]) {
 
   // for this loop, we assume: current x, current f and current v are known
   while (current_time < end_time) {
-    // calculate new x
-    calculateX(delta_t);
+    
     // calculate new f
     calculateF_easy();
+    
+
+    // calculate new x
+    calculateX(delta_t);
+  
+   
     // calculate new v
     calculateV(delta_t);
+    
 
     iteration++;
     if (iteration % 10 == 0) {
@@ -90,29 +96,34 @@ void calculateF_easy() {
     particleContainer.getParticles().at(0).setF({ 0.,0.,0. });
 
 
-    for (int i = 0; i < particleContainer.getParticle_counter() / 2; ++i)
+    for (int i = 0; i < particleContainer.getParticle_counter(); ++i)
     {
         for (int j = i + 1; j < particleContainer.getParticle_counter(); ++j) {
-            if (i == 1) {
+            if (i == 0) {
                 particleContainer.getParticles().at(j).setOldF(particleContainer.getParticles().at(j).getF());
                 particleContainer.getParticles().at(j).setF({ 0.,0.,0. });
 
             }
-            std::array<double, 3> tmpX = { particleContainer.getParticles().at(i).getX().at(0) - particleContainer.getParticles().at(j).getX().at(0),
-                                          particleContainer.getParticles().at(i).getX().at(1) - particleContainer.getParticles().at(j).getX().at(1),
-                                          particleContainer.getParticles().at(i).getX().at(2) - particleContainer.getParticles().at(j).getX().at(2)
-            };
+
+            std::array<double, 3> tmpX = particleContainer.getParticles().at(i).getX() - particleContainer.getParticles().at(j).getX();
+            double tmpdist = ArrayUtils::L2Norm(tmpX);
             double tmpM = particleContainer.getParticles().at(j).getM() * particleContainer.getParticles().at(i).getM();
-            double tmpdist = sqrt(tmpX.at(0) * tmpX.at(0) + tmpX.at(1) * tmpX.at(1) + tmpX.at(2) * tmpX.at(2));
-            tmpdist = tmpdist * tmpdist * tmpdist;
-            for (auto a : tmpX) {
-                a = -a;
-            }
-            particleContainer.getParticles().at(i).setF(particleContainer.getParticles().at(i).getF() + (tmpM/tmpdist)*tmpX);
-            particleContainer.getParticles().at(j).setF(particleContainer.getParticles().at(j).getF() - (tmpM / tmpdist) * tmpX);
+
+            double tmpdist1 = tmpdist * tmpdist * tmpdist;
+            
+
+            tmpX.at(0) = - tmpX.at(0);
+            tmpX.at(1) = -tmpX.at(1);
+            tmpX.at(2) = -tmpX.at(2);
+            
+
+            particleContainer.getParticles().at(i).setF(particleContainer.getParticles().at(i).getF() + (tmpM/tmpdist1)*tmpX);
+            particleContainer.getParticles().at(j).setF(particleContainer.getParticles().at(j).getF() - (tmpM / tmpdist1) * tmpX);
 
         }
     }
+    
+    
 }
 
 void calculateX(const double& delta_t) {
@@ -122,7 +133,7 @@ void calculateX(const double& delta_t) {
         // @TODO: insert calculation of position updates here!
 
         for (int j = 0; j < 3; ++j) {
-            x_arg[j] = particleContainer.getParticles().at(i).getX().at(j) + delta_t * particleContainer.getParticles().at(i).getV().at(j) + delta_t * delta_t * particleContainer.getParticles().at(i).getF().at(j)/2 * particleContainer.getParticles().at(i).getM();
+            x_arg.at(j) = particleContainer.getParticles().at(i).getX().at(j) + delta_t * particleContainer.getParticles().at(i).getV().at(j) + (delta_t * delta_t) * particleContainer.getParticles().at(i).getOldF().at(j)/(2 * particleContainer.getParticles().at(i).getM());
         }
 
         particleContainer.getParticles().at(i).setX(x_arg);
