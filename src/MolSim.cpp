@@ -135,7 +135,7 @@ void calculateX(const double& delta_t) {
         // @TODO: insert calculation of position updates here!
 
         for (int j = 0; j < 3; ++j) {
-            x_arg.at(j) = particleContainer.getParticles().at(i).getX().at(j) + delta_t * particleContainer.getParticles().at(i).getV().at(j) + (delta_t * delta_t) * particleContainer.getParticles().at(i).getOldF().at(j)/(2 * particleContainer.getParticles().at(i).getM());
+            x_arg.at(j) = particleContainer.getParticles().at(i).getX().at(j) + delta_t * particleContainer.getParticles().at(i).getV().at(j) + (delta_t * delta_t) * particleContainer.getParticles().at(i).getF().at(j)/(2 * particleContainer.getParticles().at(i).getM());
         }
 
         particleContainer.getParticles().at(i).setX(x_arg);
