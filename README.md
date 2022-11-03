@@ -1,6 +1,6 @@
 The Molecular Dynamics teaching code.
 
-Our code is in the branch called alextestbranch.
+Our code is in the branch called AlexTestBranch.
 
 Git repo : https://github.com/OhMyMy426/PSE.git
 
