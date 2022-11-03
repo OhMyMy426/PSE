@@ -21,12 +21,12 @@ void calculateF_easy();
 /**
  * calculate the position for all particles
  */
-void calculateX();
+void calculateX(double& delta_t);
 
 /**
  * calculate the position for all particles
  */
-void calculateV();
+void calculateV(double& delta_t);
 
 /**
  * plot the particles to a xyz-file
@@ -34,8 +34,7 @@ void calculateV();
 void plotParticles(int iteration);
 
 constexpr double start_time = 0;
-constexpr double end_time = 1000;
-constexpr double delta_t = 0.014;
+
 
 // TODO: what data structure to pick?
 std::unordered_map<int, Particle> particles;
@@ -47,16 +46,17 @@ int main(int argc, char *argsv[]) {
 
 
   std::cout << "Hello from MolSim for PSE!" << std::endl;
-  if (argc != 2) {
+  if (argc != 4) {
     std::cout << "Erroneous programme call! " << std::endl;
-    std::cout << "./molsym filename" << std::endl;
+    std::cout << "./molsym filename t_end delta_t" << std::endl;
   }
 
   FileReader fileReader;
   fileReader.readFile(particleContainer, argsv[1]);
   std::cout << "done" << std::endl;
 
-  
+ constexpr double end_time = atof(argsv[2]);
+ constexpr double delta_t = atof(argsv[3]);
 
   double current_time = start_time;
 
@@ -65,11 +65,11 @@ int main(int argc, char *argsv[]) {
   // for this loop, we assume: current x, current f and current v are known
   while (current_time < end_time) {
     // calculate new x
-    calculateX();
+    calculateX(delta_t);
     // calculate new f
     calculateF_easy();
     // calculate new v
-    calculateV();
+    calculateV(delta_t);
 
     iteration++;
     if (iteration % 10 == 0) {
@@ -115,7 +115,7 @@ void calculateF_easy() {
     }
 }
 
-void calculateX() {
+void calculateX(double& delta_t) {
     std::array<double, 3> x_arg;
     
     for (int i = 0; i < particleContainer.getParticle_counter(); ++i) {
@@ -129,7 +129,7 @@ void calculateX() {
     }
 }
 
-void calculateV() {
+void calculateV(double& delta_t) {
     for (int a = 0; a < particleContainer.getParticle_counter(); ++a) {
         // @TODO: insert calculation of position updates here!
         std::array<double, 3> f;
