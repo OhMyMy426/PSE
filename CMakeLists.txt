@@ -53,3 +53,9 @@ target_compile_options(MolSim
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)
 
 include(doxygen)
+
+## set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR})
+
+## add_custom_target( doc_doxygen 
+#   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+#    VERBATIM )
