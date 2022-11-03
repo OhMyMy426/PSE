@@ -1,3 +1,10 @@
+/*
+ * ParticleContainer.h
+ *
+ *  Created on: 30.10.2022
+ *      Author: Team-B
+ */
+
 #include "Particle.h"
 #include <unordered_map>
 #include "ParticleContainer.h"
