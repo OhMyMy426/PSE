@@ -3,14 +3,15 @@ name: superLinter
 on: push
 
 jobs:
-  name: Lint with SuperLinter
-  runs-on: ubuntu-latest
-  steps: 
-    - name: Checkout Code
-      uses: actions/checkout@v3
-    
-    - name: lint
-      uses: github/super-linter@v3
-      env:
-        DEFAULT_BRANCH: main
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+  lint:
+    name: Lint with SuperLinter
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: lint
+        uses: github/super-linter@v3
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
