@@ -10,6 +10,8 @@
 
 #include <unordered_map>
 #include "ParticleContainer.h"
+#include <string>
+#include <unistd.h>
 
 /**** forward declaration of the calculation functions ****/
 
@@ -33,6 +35,10 @@ void calculateV(const double& delta_t);
  */
 void plotParticles(int iteration);
 
+//new
+void getOptions(double& end_time, double& delta_t, int argc, char* const* argsv, std::string& infile);
+
+
 constexpr double start_time = 0;
 
 
@@ -45,18 +51,30 @@ int main(int argc, char *argsv[]) {
 
 
 
+    std::string infile = "";
+    double end_time = 1000;
+    double delta_t = 0.014;
+
+    getOptions(end_time, delta_t, argc, argsv, infile);
+
+
   std::cout << "Hello from MolSim for PSE!" << std::endl;
-  if (argc != 4) {
-    std::cout << "Erroneous programme call! " << std::endl;
-    std::cout << "./molsym filename t_end delta_t" << std::endl;
+  if (infile == "") {
+    std::cerr << "It is neccessary to provide an input file, use -h Flag for help. \nThe programm will terminate! " <<std::endl;
+    return -1; 
   }
+
+  std::cout << "Your chosen Values are: " << std::endl; 
+  std::cout << "\tdelta_t: " << delta_t << std::endl; 
+  std::cout << "\tend_time: " << end_time << std::endl; 
+  std::cout << "\tinput file: " << infile << std::endl; 
+
 
   FileReader fileReader;
   fileReader.readFile(particleContainer, argsv[1]);
   std::cout << "done" << std::endl;
 
- const double end_time = strtod(argsv[2], nullptr);
- const double delta_t = strtod(argsv[3], nullptr);
+ 
  
   double current_time = start_time;
 
@@ -173,4 +191,40 @@ void plotParticles(int iteration) {
   //outputWriter::XYZWriter writer;
   //writer.plotParticles(particles, out_name, iteration);
   //writer.plotParticles(particleContainer.getParticles(), out_name, iteration);
+}
+
+void getOptions(double& end_time, double& delta_t, int argc, char* const* argsv, std::string& infile) {
+    int opt;
+
+    while((opt = getopt(argc, argsv, ":i:d:t:h")) != -1)
+    {
+        switch (opt) {
+            case 'i':
+                infile = optarg;
+                break;
+            case 'd':
+                delta_t = strtod(optarg, nullptr);
+                break;
+            case 't': 
+                end_time = strtod(optarg, nullptr);
+                break;
+            case 'h': 
+                std::cout << "--------------------------HELP MENU-------------------------" << std::endl;
+                std::cout << "There MUST be an input file, the flag is -i" << std::endl;
+                std::cout << "There can be a:" << std::endl;
+                std::cout << "\tdelta_t, the flag is -d. The standard value is 0.014 " << std::endl;
+                std::cout << "\tend_t, the flag is -t. The standard value is 1000 " << std::endl;
+                std::cout << "See you next time!" << std::endl;              
+                exit(0);
+            case ':':
+                std::cout << "Option requires a value" << std::endl;
+                break;
+            case '?':
+                std::cout << "Unknown option " << optopt << std::endl;
+                break;
+        }
+    }
+    for(; optind < argc; optind++){
+        std::cout << "Argument ignored: " << argsv[optind] << std::endl;
+    }
 }
