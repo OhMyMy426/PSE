@@ -1,10 +1,12 @@
 name: superLinter
 
-on: 
+on:
   push:
-    branches:  "AlexTestBranch" 
+    branches:  
+      - "AlexTestBranch" 
   pull_request:
-    branches:  "AlexTestBranch" 
+    branches:
+      - "AlexTestBranch"  
 
 jobs:
   lint:
