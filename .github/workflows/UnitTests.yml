@@ -4,6 +4,9 @@ on:
   push:
     branches:  
       - "AlexTestBranch" 
+  pull_request:
+    branches:
+      - "AlexTestBranch" 
   
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
