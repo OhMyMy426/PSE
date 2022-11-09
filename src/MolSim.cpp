@@ -52,7 +52,7 @@ int main(int argc, char *argsv[]) {
   }
 
   FileReader fileReader;
-  fileReader.readFile(particleContainer, argsv[1]);
+  fileReader.readFile(particleContainer, infile);
   std::cout << "done" << std::endl;
 
  const double end_time = strtod(argsv[2], nullptr);
