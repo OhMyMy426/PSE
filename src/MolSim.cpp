@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <list>
+#include <string>
 
 #include <unordered_map>
 #include "ParticleContainer.h"
@@ -35,7 +36,7 @@ void calculateV(const double& delta_t);
 void plotParticles(int iteration);
 
 //new
-void getOptions(double& end_time, double& delta_t, int argc, char* const* argsv, char* infile);
+void getOptions(double& end_time, double& delta_t, int argc, char* const* argsv, std::string& infile);
 
 
 constexpr double start_time = 0;
@@ -50,7 +51,7 @@ int main(int argc, char *argsv[]) {
 
 
 
-    char* infile = "";
+    std::string infile = "";
     double end_time = 1000;
     double delta_t = 0.014;
 
@@ -67,10 +68,11 @@ int main(int argc, char *argsv[]) {
   std::cout << "\tdelta_t: " << delta_t << std::endl; 
   std::cout << "\tend_time: " << end_time << std::endl; 
   std::cout << "\tinput file: " << infile << std::endl; 
+  char* inputFile = infile;
 
 
   FileReader fileReader;
-  fileReader.readFile(particleContainer, infile);
+  fileReader.readFile(particleContainer, inputFile);
   std::cout << "done" << std::endl;
 
  
@@ -192,7 +194,7 @@ void plotParticles(int iteration) {
   //writer.plotParticles(particleContainer.getParticles(), out_name, iteration);
 }
 
-void getOptions(double& end_time, double& delta_t, int argc, char* const* argsv, char* infile) {
+void getOptions(double& end_time, double& delta_t, int argc, char* const* argsv, std::string& infile) {
     int opt;
 
     while((opt = getopt(argc, argsv, ":i:d:t:h")) != -1)
