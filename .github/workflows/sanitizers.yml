@@ -19,7 +19,7 @@ jobs:
     - uses: actions/checkout@v3
       
     - name: xerces-c
-      run: wget https://dlcdn.apache.org//xerces/c/3/sources/xerces-c-3.2.4.tar.gz
+      run: wget https://dlcdn.apache.org//xerces/c/3/sources/xerces-c-3.2.4.tar.gz 
       
     - name: unwrap1
       run: gzip -d xerces-c-3.2.4.tar.gz
@@ -30,15 +30,12 @@ jobs:
       run: cd xerces-c-3.2.4
       
     - name: cmakeXer
-      run: cmake xerces-c-3.2.4
+      run: cmake xerces-c-3.2.4 -B ${{github.workspace}}/install
       
     - name: installXer
+      working-directory: ${{github.workspace}}/install
       run: sudo make install
-      
-    - name: back1
-      run: cd ..
     
-
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
