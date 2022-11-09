@@ -27,8 +27,12 @@ jobs:
           
       - name: C++ code linter (clang-tidy and cppcheck)
         uses: smay1613/cpp-linter-action@0.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
         
       - name: C/C++ Linter
         uses: cpp-linter/cpp-linter-action@v2.2.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
