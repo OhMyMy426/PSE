@@ -10,7 +10,6 @@
 
 #include <unordered_map>
 #include "ParticleContainer.h"
-#include <string>
 #include <unistd.h>
 
 /**** forward declaration of the calculation functions ****/
@@ -36,7 +35,7 @@ void calculateV(const double& delta_t);
 void plotParticles(int iteration);
 
 //new
-void getOptions(double& end_time, double& delta_t, int argc, char* const* argsv, std::string& infile);
+void getOptions(double& end_time, double& delta_t, int argc, char* const* argsv, char* infile);
 
 
 constexpr double start_time = 0;
@@ -51,7 +50,7 @@ int main(int argc, char *argsv[]) {
 
 
 
-    std::string infile = "";
+    char* infile = "";
     double end_time = 1000;
     double delta_t = 0.014;
 
@@ -193,7 +192,7 @@ void plotParticles(int iteration) {
   //writer.plotParticles(particleContainer.getParticles(), out_name, iteration);
 }
 
-void getOptions(double& end_time, double& delta_t, int argc, char* const* argsv, std::string& infile) {
+void getOptions(double& end_time, double& delta_t, int argc, char* const* argsv, char* infile) {
     int opt;
 
     while((opt = getopt(argc, argsv, ":i:d:t:h")) != -1)
