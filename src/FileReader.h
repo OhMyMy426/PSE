@@ -10,7 +10,6 @@
 #include "Particle.h"
 
 #include <list>
-#include <string>
 #include <unordered_map>
 #include "ParticleContainer.h"
 
@@ -20,5 +19,5 @@ public:
   FileReader();
   virtual ~FileReader();
 
-  void readFile(ParticleContainer& particleContainer, std::String& filename);
+  void readFile(ParticleContainer& particleContainer, char* filename);
 };
