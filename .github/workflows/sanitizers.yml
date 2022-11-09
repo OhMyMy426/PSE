@@ -36,7 +36,7 @@ jobs:
       run: cd xerces-c-3.2.4
       
     - name: cmakeXer
-      run: cmake .
+      run: cmake xerces-c-3.2.4
       
     - name: installXer
       run: make install
