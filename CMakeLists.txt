@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 
+#
+set(MYFLAGS)
+
 # define project name, version
 project(PSEMolDyn_GroupB VERSION 0.0.1)
 
@@ -39,13 +42,16 @@ target_link_libraries(MolSim
         # stuff that is used in headers and source files
         PUBLIC
             xerces-c
+	    ${MYFLAGS}
 )
 
+
+#define the flags
 # activate all compiler warnings. Clean up your code :P
 # depending on the compiler different flags are used
 target_compile_options(MolSim
         PRIVATE
-            $<$<CXX_COMPILER_ID:GNU>: ${CMAKE_CXX_FLAGS} -Wall>
+            $<$<CXX_COMPILER_ID:GNU>: -Wall ${MYFLAGS}>
             # disable some spam warnings for icpc...
             $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
 )
