@@ -11,6 +11,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <string>
 
 #include <unordered_map>
 #include "ParticleContainer.h"
@@ -20,7 +21,7 @@ FileReader::FileReader() = default;
 
 FileReader::~FileReader() = default;
 
-void FileReader::readFile(ParticleContainer& particleContainer, char *filename) { //changed FileReader arguments
+void FileReader::readFile(ParticleContainer& particleContainer, std::String& filename) { //changed FileReader arguments
   std::array<double, 3> x;
   std::array<double, 3> v;
   double m;
