@@ -8,13 +8,13 @@ on:
     branches:
       - AlexTestBranch
       
- jobs:
+jobs:
   build:
     name: Lint Code Base
     runs-on: ubuntu-latest
     
     steps:
-
+    
       - name: Checkout Code
         uses: actions/checkout@v3
         
@@ -23,3 +23,10 @@ on:
         env:
           VALIDATE_ALL_CODEBASE: false # this is necessary, since it doesn´t like the library style
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: C++ code linter (clang-tidy and cppcheck)
+        uses: smay1613/cpp-linter-action@0.0.2
+        
+      - name: C/C++ Linter
+        uses: cpp-linter/cpp-linter-action@v2.2.2
+
