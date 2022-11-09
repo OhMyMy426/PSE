@@ -11,7 +11,7 @@
 
 #include <list>
 #include <unordered_map>
-#include <string>
+
 #include "ParticleContainer.h"
 
 class FileReader {
@@ -20,5 +20,5 @@ public:
   FileReader();
   virtual ~FileReader();
 
-  void readFile(ParticleContainer& particleContainer, std::String& filename filename);
+  void readFile(ParticleContainer& particleContainer, char* filename);
 };
