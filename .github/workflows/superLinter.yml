@@ -23,6 +23,7 @@ jobs:
         env:
           DEFAULT_BRANCH: main
           VALIDATE_ALL_CODEBASE: false # this is necessary, since it doesn´t like the library style
+          VALIDATE_C++_CPP-LINT: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
      
