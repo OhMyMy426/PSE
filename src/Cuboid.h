@@ -5,7 +5,7 @@
 
 class Cuboid {
 private:
-    double leftLowerCorner;                     //The coordinate of the lower left front-side corner
+    std::array<double,3> leftLowerCorner;                     //The coordinate of the lower left front-side corner
     std::array<double,3> amountOfParticles;     //Number of particles per dimension: N1 × N2 × N3
     double meshWidth;                           //Distance h of the particles (mesh width of the grid)
     double particleMass;                        //Mass m of one particle
@@ -15,18 +15,18 @@ private:
 
 public:
     Cuboid(const Cuboid& other);
-    Cuboid(double leftLowerCorner, std::array<double,3> amountOfParticles, 
+    Cuboid(std::array<double,3> leftLowerCorner, std::array<double,3> amountOfParticles, 
             double meshWidth, double particleMass, std::array<double,3> initialVelocity, double borwnianMotionVelocity);
     virtual ~Cuboid();
 
-    double getLeftLowerCorner();
+    std::array<double,3>& getLeftLowerCorner();
     std::array<double,3>& getAmountOfParticles();
     double getMeshWidth();
     double getParticleMass();
     std::array<double,3>& getInitialVelocity();
     double getBorwnianMotionVelocity();
 
-    void setLeftLowerCorner(double parameter);
+    void setLeftLowerCorner(std::array<double,3>& parameter);
     void getAmountOfParticles(std::array<double,3>& parameter);
     void getMeshWidth(double parameter);
     void getParticleMass(double parameter);

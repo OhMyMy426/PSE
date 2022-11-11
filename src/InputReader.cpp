@@ -20,7 +20,8 @@ void startInteractiveCommandLine(){
         } else {
             std::cout << "\t- You have " << cuboids.size() << " cuboids set up." << std::endl;
         }
-        std::cout << "If you would like to view your Cuboids, type in \'C\'.\n To set up a new Cuboid manually, type in \'M\'. To read in a File, type in \'F\'. To set the End-Time or Delta_t, use \'E\' or \'D\', respectively. \'S\' starts the Simulation." << std::endl;
+        std::cout << "If you would like to view your Cuboids, type in \'C\'.\n To set up a new Cuboid manually, type in \'M\'. To read in a File, type in \'F\'.
+                         To set the End-Time or Delta_t, use \'E\' or \'D\', respectively. \'S\' starts the Simulation." << std::endl;
         char chosenOption = 'x'; 
         std::cin >> chosenOption;
 
@@ -34,6 +35,24 @@ void startInteractiveCommandLine(){
                         std::cout << cuboids.at(i) << std::endl;
                     }
                 }
+                break;
+            case 'E':
+                std::cout << "The current End-Time is :" << end_time << ".\n\t Please input a new value:" << std::endl;
+                std::cin >> end_time;
+                while (end_time <= 0.0) {
+                    std::cout << "This is an invalid time. Please input a new one!" << std::endl;
+                    std::cin >> end_time;
+                }
+                break;
+            case 'D':
+                 std::cout << "The current Delta_t is :" << delta_t << ".\n\t Please input a new value:" << std::endl;
+                std::cin >> delta_t;
+                while (delta_t <= 0.0) {
+                    std::cout << "This is an invalid time. Please input a new one!" << std::endl;
+                    std::cin >> delta_t;
+                }
+                break;
+            
         }
     }
 }
