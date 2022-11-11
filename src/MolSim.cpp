@@ -1,4 +1,3 @@
-
 #include "FileReader.h"
 #include "outputWriter/XYZWriter.h"
 #include "outputWriter/VTKWriter.h"
