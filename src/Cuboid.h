@@ -10,13 +10,13 @@ private:
     double meshWidth;                           //Distance h of the particles (mesh width of the grid)
     double particleMass;                        //Mass m of one particle
     std::array<double,3> initialVelocity;       //Initial velocity v of the particles (3 Components)
-    double borwnianMotionVelocity;              //The mean-value of the velocity of the Brownian Motion
+    double brownianMotionVelocity;              //The mean-value of the velocity of the Brownian Motion
 
 
 public:
     Cuboid(const Cuboid& other);
     Cuboid(std::array<double,3> leftLowerCorner, std::array<double,3> amountOfParticles, 
-            double meshWidth, double particleMass, std::array<double,3> initialVelocity, double borwnianMotionVelocity);
+            double meshWidth, double particleMass, std::array<double,3> initialVelocity, double brownianMotionVelocity);
     virtual ~Cuboid();
 
     std::array<double,3>& getLeftLowerCorner();
@@ -24,14 +24,14 @@ public:
     double getMeshWidth();
     double getParticleMass();
     std::array<double,3>& getInitialVelocity();
-    double getBorwnianMotionVelocity();
+    double getBrownianMotionVelocity();
 
     void setLeftLowerCorner(std::array<double,3>& parameter);
     void getAmountOfParticles(std::array<double,3>& parameter);
     void getMeshWidth(double parameter);
     void getParticleMass(double parameter);
     void getInitialVelocity(std::array<double,3>& parameter);
-    void getBorwnianMotionVelocity(double parameter);
+    void getBrownianMotionVelocity(double parameter);
 
     bool operator==(Cuboid &other);
 
