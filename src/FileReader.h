@@ -21,4 +21,5 @@ public:
   virtual ~FileReader();
 
   void readFile(ParticleContainer& particleContainer, char* filename);
+  void readFileCuboids(std::vector<Cuboid>& CuboidVektor, const char* filename);
 };

@@ -6,7 +6,7 @@
 class Cuboid {
 private:
     std::array<double,3> leftLowerCorner;                     //The coordinate of the lower left front-side corner
-    std::array<double,3> amountOfParticles;     //Number of particles per dimension: N1 × N2 × N3
+    std::array<int,3> amountOfParticles;     //Number of particles per dimension: N1 × N2 × N3
     double meshWidth;                           //Distance h of the particles (mesh width of the grid)
     double particleMass;                        //Mass m of one particle
     std::array<double,3> initialVelocity;       //Initial velocity v of the particles (3 Components)
@@ -15,19 +15,19 @@ private:
 
 public:
     Cuboid(const Cuboid& other);
-    Cuboid(std::array<double,3> leftLowerCorner, std::array<double,3> amountOfParticles, 
+    Cuboid(std::array<double,3> leftLowerCorner, std::array<int,3> amountOfParticles, 
             double meshWidth, double particleMass, std::array<double,3> initialVelocity, double brownianMotionVelocity);
     virtual ~Cuboid();
 
     std::array<double,3>& getLeftLowerCorner();
-    std::array<double,3>& getAmountOfParticles();
+    std::array<int,3>& getAmountOfParticles();
     double getMeshWidth();
     double getParticleMass();
     std::array<double,3>& getInitialVelocity();
     double getBrownianMotionVelocity();
 
     void setLeftLowerCorner(std::array<double,3>& parameter);
-    void getAmountOfParticles(std::array<double,3>& parameter);
+    void getAmountOfParticles(std::array<int,3>& parameter);
     void getMeshWidth(double parameter);
     void getParticleMass(double parameter);
     void getInitialVelocity(std::array<double,3>& parameter);

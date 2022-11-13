@@ -3,7 +3,7 @@
 #include <iostream>
 #include "utils/ArrayUtils.h"
 
-Cuboid::Cuboid(std::array<double,3> leftLowerCorner, std::array<double,3> amountOfParticles, 
+Cuboid::Cuboid(std::array<double,3> leftLowerCorner, std::array<int,3> amountOfParticles, 
             double meshWidth, double particleMass, std::array<double,3> initialVelocity, double borwnianMotionVelocity)
             :leftLowerCorner(leftLowerCorner), amountOfParticles(amountOfParticles),meshWidth(meshWidth), particleMass(particleMass),initialVelocity(initialVelocity), brownianMotionVelocity(brownianMotionVelocity)
     {}
@@ -22,14 +22,14 @@ Cuboid::~Cuboid() {};
 
 
 std::array<double,3>& Cuboid::getLeftLowerCorner() {return leftLowerCorner;}
-std::array<double,3>& Cuboid::getAmountOfParticles(){return amountOfParticles};
+std::array<int,3>& Cuboid::getAmountOfParticles(){return amountOfParticles};
 double Cuboid::getMeshWidth() {return meshWidth;}
 double Cuboid::getParticleMass() {return particleMass;}
 std::array<double,3>& Cuboid::getInitialVelocity() {return initialVelocity;}
 double Cuboid::getBrownianMotionVelocity() {return brownianMotionVelocity;}
 
 void Cuboid::setLeftLowerCorner(std::array<double,3>& parameter) {leftLowerCorner = parameter;}
-void Cuboid::getAmountOfParticles(std::array<double,3>& parameter) {amountOfParticles = parameter;}
+void Cuboid::getAmountOfParticles(std::array<int,3>& parameter) {amountOfParticles = parameter;}
 void Cuboid::getMeshWidth(double parameter) {meshWidth = parameter;}
 void Cuboid::getParticleMass(double parameter) {particleMass = parameter;}
 void Cuboid::getInitialVelocity(std::array<double,3>& parameter) {initialVelocity = parameter;}
