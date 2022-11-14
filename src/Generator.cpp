@@ -1,7 +1,7 @@
 
 #include <vector>
-#include "Particle.h"
 #include "Generator.h"
+#include "Particle.h"
 #include "Cuboid.h"
 #include <array>
 #include <iostream>
@@ -11,7 +11,7 @@
 
 //a default Constructor
 Generator::Generator() {
-    
+
 };
 //a default Destructor
 Generator::~Generator() = default;
@@ -38,7 +38,7 @@ Generator::Generator(std::vector<Cuboid>& Cuboids_args) :Cuboids(Cuboids_args) {
 
 
 //initialises the given unordered_map for the ParticleContainer
-void initialise(std::vector<Cuboid>& cuboids, std::unordered_map<int, Particle>& particles, int& particleCounter) {
+void Generator::initialise(std::vector<Cuboid>& cuboids, std::unordered_map<int, Particle>& particles, int& particleCounter) {
     std::array<double, 3> generateBrownianMovement {.0,.0,.0};
     for (Cuboid n : cuboids) {
         int x_size = n.getAmountOfParticles().at(0);

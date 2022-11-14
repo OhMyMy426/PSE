@@ -3,8 +3,8 @@
 #pragma once
 #include <vector>
 #include <unordered_map>
-#include <Particle.h>
-#include <Cuboid.h>
+#include "Particle.h"
+#include "Cuboid.h"
 
 class Generator
 {
