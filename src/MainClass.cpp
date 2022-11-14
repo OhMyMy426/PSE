@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <iostream>
 #include "MolSim.h"
+#include "Generator.h"
 
 //This is the Main Class of the new Project. From here, the simulation of the first and second homework can be started
 
@@ -34,6 +35,7 @@ int main(int argc, char *argsv[]) {
         case 2: {
                 //Initialisation of the necessary Variables for the command line for week two
                 std::vector<Cuboid> cuboids {}; 
+                Generator particleGenerator;
                 double end_time = 1000;
                 double delta_t = 0.014;
                 double sigma = 1;
@@ -45,6 +47,7 @@ int main(int argc, char *argsv[]) {
                 std::unordered_map<int, Particle> particles {};
                 int particle_counter = 0;
                 //Call the Generator, giving us the Particles out of the Cuboids the user gave us
+                particleGenerator.initialise(cuboids, particles, particle_counter);
                 ParticleContainer particleContainer(particles, particle_counter);
                 //Construct our Simulator and run the Simulation with the given Parameters
                 Simulator simulator;

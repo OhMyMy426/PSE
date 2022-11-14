@@ -39,6 +39,7 @@ void InputReader::startInteractiveCommandLine(std::vector<Cuboid>& cuboids, doub
                         std::cout << "Cuboid number " << i << " :" << std::endl;
                         std::cout << cuboids.at(i) << std::endl;
                     }
+                    std::cout << std::endl;
                 }
                 break;
             case 'E':
@@ -114,12 +115,16 @@ void InputReader::startInteractiveCommandLine(std::vector<Cuboid>& cuboids, doub
                 std::cout << "\tIn y direction: " << std::endl;
                 std::cin >> initialVelocity.at(1);
                 std::cout << "\tIn z direction: " << std::endl;
-                std::cin >> initialVelocity.at(2); 
+                std::cin >> initialVelocity.at(2);
+                std::cout << "Please input the average for the Brownian Motion:" << std::endl;
+                std::cin >> brownianMotionVelocity;
+ 
 
-                cuboids.emplace_back(Cuboid(leftLowerCorner, amountOfParticles, meshWidth, particleMass, initialVelocity, .0));
+                cuboids.emplace_back(Cuboid(leftLowerCorner, amountOfParticles, meshWidth, particleMass, initialVelocity, brownianMotionVelocity));
                     }
                 break;
             case 'S': 
+                std::cout << "Simulation started!" << std::endl;
                 return;
             default:
                 std::cout << "Bad option, please try again!" << std::endl;
@@ -170,6 +175,7 @@ void InputReader::startInteractiveCommandLine(std::vector<Cuboid>& cuboids, doub
                     }
                 break;
             case 'S': 
+                std::cout << "Simulation started!" << std::endl;
                 return;
             default:
                 std::cout << "Bad option, please try again!" << std::endl;

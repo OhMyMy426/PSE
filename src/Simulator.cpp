@@ -6,6 +6,7 @@
 #include <array>
 #include "OutputWriter.h"
 
+
 Simulator::Simulator() = default;
 
 Simulator::~Simulator() = default;
@@ -18,7 +19,7 @@ void Simulator::runSimulation(ParticleContainer& particleContainer, double& end_
   const double start_time = 0;
   double current_time = start_time;
   int iteration = 0;
-
+  
 
   //This runs the simulation
   while (current_time < end_time) {

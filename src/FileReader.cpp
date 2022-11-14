@@ -141,7 +141,13 @@ void FileReader::readFileCuboids(std::vector<Cuboid>& CuboidVektor, const char* 
       for (auto &xj : initialVelocity) {
         datastream >> xj;
       }
-      
+      if (datastream.eof()) {
+        std::cout
+            << "Error reading file: eof reached unexpectedly reading from line "
+            << i << std::endl;
+        exit(-1);
+      }
+      datastream >> brownianMotionVelocity;
 
       CuboidVektor.emplace_back(Cuboid(leftLowerCorner, amoutOfParticles, meshWidth, particleMass, initialVelocity, brownianMotionVelocity));
 
