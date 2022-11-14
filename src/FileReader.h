@@ -11,6 +11,8 @@
 
 #include <list>
 #include <unordered_map>
+#include <vector>
+#include "Cuboid.h"
 
 #include "ParticleContainer.h"
 
@@ -20,6 +22,6 @@ public:
   FileReader();
   virtual ~FileReader();
 
-  void readFile(ParticleContainer& particleContainer, char* filename);
+  void readFile(ParticleContainer& particleContainer, const char* filename);
   void readFileCuboids(std::vector<Cuboid>& CuboidVektor, const char* filename);
 };

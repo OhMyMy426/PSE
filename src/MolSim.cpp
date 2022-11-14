@@ -12,71 +12,43 @@
 #include <unordered_map>
 #include "ParticleContainer.h"
 #include <unistd.h>
+#include "MolSim.h"
+
+
+MolSim::MolSim() = default;
+
+MolSim::~MolSim() = default;
 
 /**** forward declaration of the calculation functions ****/
 
 /**
  * calculate the force for all particles
  */
-void calculateF();
+void calculateF(ParticleContainer& particleContainer);
 
 /**
  * calculate the position for all particles
  */
-void calculateX(const double& delta_t);
+void calculateX(ParticleContainer& particleContainer, const double& delta_t);
 
 /**
  * calculate the position for all particles
  */
-void calculateV(const double& delta_t);
+void calculateV(ParticleContainer& particleContainer, const double& delta_t);
 
 /**
  * plot the particles to a xyz-file
  */
-void plotParticles(int iteration);
-
-//new
-void getOptions(double& end_time, double& delta_t, int argc, char* const* argsv, std::string& infile);
-
+void plotParticles(int iteration, ParticleContainer& particleContainer);
 
 constexpr double start_time = 0;
 
 
 // TODO: what data structure to pick?
-std::unordered_map<int, Particle> particles;
-int particle_counter = 0;
-static ParticleContainer particleContainer(particles, particle_counter);
-
-int main(int argc, char *argsv[]) {
 
 
-
-    std::string infile = "";
-    double end_time = 1000;
-    double delta_t = 0.014;
-
-    getOptions(end_time, delta_t, argc, argsv, infile);
-
-
-  std::cout << "Hello from MolSim for PSE!" << std::endl;
-  if (infile == "") {
-    std::cerr << "It is neccessary to provide an input file, use -h Flag for help. \nThe programm will terminate! " <<std::endl;
-    return -1; 
-  }
-
-  std::cout << "Your chosen Values are: " << std::endl; 
-  std::cout << "\tdelta_t: " << delta_t << std::endl; 
-  std::cout << "\tend_time: " << end_time << std::endl; 
-  std::cout << "\tinput file: " << infile << std::endl; 
-  char* inputFile = infile;
-
-
-  FileReader fileReader;
-  fileReader.readFile(particleContainer, inputFile);
-  std::cout << "done" << std::endl;
-
- 
- 
+int 
+MolSim::firstWeek(ParticleContainer& particleContainer, double& end_time, double& delta_t) {
   double current_time = start_time;
 
   int iteration = 0;
@@ -88,20 +60,20 @@ int main(int argc, char *argsv[]) {
     
 
     // calculate new x
-    calculateX(delta_t);
+    calculateX(particleContainer, delta_t);
 
     // calculate new f
-    calculateF();
+    calculateF(particleContainer);
   
    
     // calculate new v
-    calculateV(delta_t);
+    calculateV(particleContainer, delta_t);
     
 
     iteration++;
     if (iteration % 10 == 0) {
 
-        plotParticles(iteration);
+        plotParticles(iteration, particleContainer);
     }
     std::cout << "Iteration " << iteration << " finished." << std::endl;
 
@@ -112,7 +84,7 @@ int main(int argc, char *argsv[]) {
   return 0;
 }
 
-void calculateF() {
+void calculateF(ParticleContainer& particleContainer) {
     particleContainer.getParticles().at(0).setOldF(particleContainer.getParticles().at(0).getF());
     particleContainer.getParticles().at(0).setF({ 0.,0.,0. });
 
@@ -147,7 +119,7 @@ void calculateF() {
     
 }
 
-void calculateX(const double& delta_t) {
+void calculateX(ParticleContainer& particleContainer, const double& delta_t) {
     std::array<double, 3> x_arg;
     
     for (int i = 0; i < particleContainer.getParticle_counter(); ++i) {
@@ -161,7 +133,7 @@ void calculateX(const double& delta_t) {
     }
 }
 
-void calculateV(const double& delta_t) {
+void calculateV(ParticleContainer& particleContainer, const double& delta_t) {
     for (int a = 0; a < particleContainer.getParticle_counter(); ++a) {
         // @TODO: insert calculation of position updates here!
         std::array<double, 3> f;
@@ -179,7 +151,7 @@ void calculateV(const double& delta_t) {
     }
 }
 
-void plotParticles(int iteration) {
+void plotParticles(int iteration, ParticleContainer& particleContainer) {
 
   std::string out_name("MD_vtk");
   outputWriter::VTKWriter writer;
@@ -194,38 +166,3 @@ void plotParticles(int iteration) {
   //writer.plotParticles(particleContainer.getParticles(), out_name, iteration);
 }
 
-void getOptions(double& end_time, double& delta_t, int argc, char* const* argsv, std::string& infile) {
-    int opt;
-
-    while((opt = getopt(argc, argsv, ":i:d:t:h")) != -1)
-    {
-        switch (opt) {
-            case 'i':
-                infile = optarg;
-                break;
-            case 'd':
-                delta_t = strtod(optarg, nullptr);
-                break;
-            case 't': 
-                end_time = strtod(optarg, nullptr);
-                break;
-            case 'h': 
-                std::cout << "--------------------------HELP MENU-------------------------" << std::endl;
-                std::cout << "There MUST be an input file, the flag is -i" << std::endl;
-                std::cout << "There can be a:" << std::endl;
-                std::cout << "\tdelta_t, the flag is -d. The standard value is 0.014 " << std::endl;
-                std::cout << "\tend_t, the flag is -t. The standard value is 1000 " << std::endl;
-                std::cout << "See you next time!" << std::endl;              
-                exit(0);
-            case ':':
-                std::cout << "Option requires a value" << std::endl;
-                break;
-            case '?':
-                std::cout << "Unknown option " << optopt << std::endl;
-                break;
-        }
-    }
-    for(; optind < argc; optind++){
-        std::cout << "Argument ignored: " << argsv[optind] << std::endl;
-    }
-}

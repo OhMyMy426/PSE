@@ -4,7 +4,7 @@
 #include "utils/ArrayUtils.h"
 
 Cuboid::Cuboid(std::array<double,3> leftLowerCorner, std::array<int,3> amountOfParticles, 
-            double meshWidth, double particleMass, std::array<double,3> initialVelocity, double borwnianMotionVelocity)
+            double meshWidth, double particleMass, std::array<double,3> initialVelocity, double brownianMotionVelocity)
             :leftLowerCorner(leftLowerCorner), amountOfParticles(amountOfParticles),meshWidth(meshWidth), particleMass(particleMass),initialVelocity(initialVelocity), brownianMotionVelocity(brownianMotionVelocity)
     {}
 
@@ -22,7 +22,7 @@ Cuboid::~Cuboid() {};
 
 
 std::array<double,3>& Cuboid::getLeftLowerCorner() {return leftLowerCorner;}
-std::array<int,3>& Cuboid::getAmountOfParticles(){return amountOfParticles};
+std::array<int,3>& Cuboid::getAmountOfParticles(){return amountOfParticles;}
 double Cuboid::getMeshWidth() {return meshWidth;}
 double Cuboid::getParticleMass() {return particleMass;}
 std::array<double,3>& Cuboid::getInitialVelocity() {return initialVelocity;}
@@ -39,7 +39,7 @@ void Cuboid::getBrownianMotionVelocity(double parameter) {brownianMotionVelocity
 std::string Cuboid::toString() const {
   std::stringstream stream;
   stream << "Cuboid:\n - leftLowerCorner:" << "{" << leftLowerCorner.at(0) << " " << leftLowerCorner.at(1) << " " << leftLowerCorner.at(2) << "}" << "\n - amountOfParticles: " << 
-    amountOfParticles.at(0) << " " << amountOfParticles.at(1) << " " << amountOfParticles.at(2) << "\n - meshWidth: " << meshWidth << "\n - particleMass: " << particleMass << "\n - initialVelocity: " << "{" << initialVelocity.at(0) << " " << initialVelocity.at(1) << " " << initialVelocity.at(2) << "}" << "\n - borwnianMotionVelocity" << brownianMotionVelocity;
+    amountOfParticles.at(0) << " " << amountOfParticles.at(1) << " " << amountOfParticles.at(2) << "\n - meshWidth: " << meshWidth << "\n - particleMass: " << particleMass << "\n - initialVelocity: " << "{" << initialVelocity.at(0) << " " << initialVelocity.at(1) << " " << initialVelocity.at(2) << "}" << "\n - borwnianMotionVelocity: " << brownianMotionVelocity;
   return stream.str();
 }
 
