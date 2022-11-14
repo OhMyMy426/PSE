@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include "Cuboid.h"
+#include "Particle.h"
+#include "ParticleContainer.h"
 
 class InputReader {
 public:

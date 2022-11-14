@@ -3,6 +3,8 @@
 #include <string>
 #include <iostream>
 #include "InputReader.h"
+#include "ParticleContainer.h"
+#include "Particle.h"
 
 InputReader::InputReader() = default;
 
