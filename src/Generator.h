@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include "Particle.h"
 #include "Cuboid.h"
+#include "ParticleContainer.h"
 
 class Generator
 {
@@ -16,7 +17,7 @@ public:
     Generator(std::vector<Cuboid>& Cuboids_args);
     Generator();
     virtual ~Generator();
-    void initialise(std::vector<Cuboid>& cuboids, std::unordered_map<int,Particle>& particles, int& particleCounter);
+    void initialise(std::vector<Cuboid>& cuboids, ParticleContainer& particleContainer);
     std::vector<Cuboid>& getCuboids();
     std::vector<Particle>& getParticles();
 };

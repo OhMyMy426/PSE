@@ -39,7 +39,7 @@ void Cuboid::getBrownianMotionVelocity(double parameter) {brownianMotionVelocity
 std::string Cuboid::toString() const {
   std::stringstream stream;
   stream << "Cuboid:\n - leftLowerCorner:" << "{" << leftLowerCorner.at(0) << " " << leftLowerCorner.at(1) << " " << leftLowerCorner.at(2) << "}" << "\n - amountOfParticles: " << 
-    amountOfParticles.at(0) << " " << amountOfParticles.at(1) << " " << amountOfParticles.at(2) << "\n - meshWidth: " << meshWidth << "\n - particleMass: " << particleMass << "\n - initialVelocity: " << "{" << initialVelocity.at(0) << " " << initialVelocity.at(1) << " " << initialVelocity.at(2) << "}" << "\n - borwnianMotionVelocity: " << brownianMotionVelocity;
+   "{" << amountOfParticles.at(0) << " " << amountOfParticles.at(1) << " " << amountOfParticles.at(2) << "}" << "\n - meshWidth: " << meshWidth << "\n - particleMass: " << particleMass << "\n - initialVelocity: " << "{" << initialVelocity.at(0) << " " << initialVelocity.at(1) << " " << initialVelocity.at(2) << "}" << "\n - borwnianMotionVelocity: " << brownianMotionVelocity;
   return stream.str();
 }
 

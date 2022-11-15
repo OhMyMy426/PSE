@@ -5,6 +5,7 @@
 #include "LJCalculator.h"
 #include <array>
 #include "OutputWriter.h"
+#include <iostream>
 
 
 Simulator::Simulator() = default;
@@ -46,7 +47,7 @@ void Simulator::runSimulation(ParticleContainer& particleContainer, double& end_
       calculator.calculateF_LJ(particleContainer.getParticles().at(i), particleContainer.getParticles().at(j), sigma, epsilon);
     }
   }
-
+  
 
   // calculate new v
   for (int i = 0; i < particleContainer.getParticle_counter(); ++i){

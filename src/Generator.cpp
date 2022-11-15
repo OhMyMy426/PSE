@@ -8,6 +8,7 @@
 #include "utils/MaxwellBoltzmannDistribution.h"
 #include "utils/ArrayUtils.h"
 #include <unordered_map>
+#include "ParticleContainer.h"
 
 //a default Constructor
 Generator::Generator() {
@@ -38,28 +39,34 @@ Generator::Generator(std::vector<Cuboid>& Cuboids_args) :Cuboids(Cuboids_args) {
 
 
 //initialises the given unordered_map for the ParticleContainer
-void Generator::initialise(std::vector<Cuboid>& cuboids, std::unordered_map<int, Particle>& particles, int& particleCounter) {
+void Generator::initialise(std::vector<Cuboid>& cuboids, ParticleContainer& particleContainer) {
     std::array<double, 3> generateBrownianMovement {.0,.0,.0};
     for (Cuboid n : cuboids) {
         int x_size = n.getAmountOfParticles().at(0);
         int y_size = n.getAmountOfParticles().at(1);
         int z_size = n.getAmountOfParticles().at(2);
-        particleCounter = x_size * y_size * z_size;
-        particles.reserve(particleCounter);
-        int map_counter = { 0 };
+        particleContainer.setParticleCounter(x_size * y_size * z_size + particleContainer.getParticle_counter());
+    }
+        particleContainer.getParticles().reserve(particleContainer.getParticle_counter());   
+        int map_counter { 0 };
+    for (Cuboid n : cuboids) {
+        int x_size = n.getAmountOfParticles().at(0);
+        int y_size = n.getAmountOfParticles().at(1);
+        int z_size = n.getAmountOfParticles().at(2);
         for (int i{ 0 };i < x_size;++i) {
-            for (int j{ 0 };i < x_size;++i) {
-                for (int k{ 0 };i < x_size;++i) {
+            for (int j{ 0 };j < y_size;++j) {
+                for (int k{ 0 };k < z_size;++k) {
                     std::array<double, 3 > position = n.getLeftLowerCorner();
                     position.at(0) += i * n.getMeshWidth();
                     position.at(1) += j * n.getMeshWidth();
                     position.at(2) += k * n.getMeshWidth();
                     generateBrownianMovement = maxwellBoltzmannDistributedVelocity(n.getBrownianMotionVelocity(), 3);
-                    particles.emplace(map_counter, (Particle(position, (n.getInitialVelocity()+generateBrownianMovement), n.getParticleMass(), 0)));
+                    particleContainer.getParticles().emplace(map_counter, Particle(position, (n.getInitialVelocity()+generateBrownianMovement), n.getParticleMass(), 0));
                     map_counter++;
                 }
             }
         }
+    
     }
 }
 

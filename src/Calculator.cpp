@@ -20,7 +20,8 @@ void Calculator::calculateV(Particle& firstParticle, double& delta_t) {
 
     added_forces = firstParticle.getF() + firstParticle.getOldF();
     for (size_t i = 0; i < 3; i++) {
-            new_v_to_calculate[i] = firstParticle.getV().at(i) + (delta_t * (added_forces[i] / (2 * firstParticle.getM())));
+            new_v_to_calculate.at(i) = firstParticle.getV().at(i) + (delta_t * (added_forces.at(i) / (2 * firstParticle.getM())));
         }
+    firstParticle.setV(new_v_to_calculate);
 }
 

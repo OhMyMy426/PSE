@@ -15,7 +15,7 @@
 
 int main(int argc, char *argsv[]) {
     //first, the user is asked for the week he wants to run
-    std::cout << "Hello and welcome to Molecular Simulations. Please choose the week you would like to use. Week one is Simulation of Planets, week two Lennard-Jones-Potential" << std::endl;
+    std::cout << "Hello and welcome to Molecular Simulations. Please choose the week you would like to use. Week one (\'1\') is Simulation of Planets, week two (\'2\') Lennard-Jones-Potential" << std::endl;
     int chosenWeek = 0;
     std::cin >> chosenWeek;
     switch (chosenWeek) {
@@ -37,8 +37,8 @@ int main(int argc, char *argsv[]) {
                 //Initialisation of the necessary Variables for the command line for week two
                 std::vector<Cuboid> cuboids {}; 
                 Generator particleGenerator;
-                double end_time = 1000;
-                double delta_t = 0.014;
+                double end_time = 5;
+                double delta_t = 0.0002;
                 double sigma = 1;
                 double epsilon = 5;
                 //calling of the command line
@@ -47,9 +47,9 @@ int main(int argc, char *argsv[]) {
                 //initialise the unordered Map and the counter that the generator fills that then goes into the ParticleContainer for the Simulation in Simulator
                 std::unordered_map<int, Particle> particles {};
                 int particle_counter = 0;
-                //Call the Generator, giving us the Particles out of the Cuboids the user gave us
-                particleGenerator.initialise(cuboids, particles, particle_counter);
                 ParticleContainer particleContainer(particles, particle_counter);
+                //Call the Generator, giving us the Particles out of the Cuboids the user gave us
+                particleGenerator.initialise(cuboids, particleContainer);
                 //Construct our Simulator and run the Simulation with the given Parameters
                 Simulator simulator;
                 simulator.runSimulation(particleContainer, end_time, delta_t, epsilon, sigma);
