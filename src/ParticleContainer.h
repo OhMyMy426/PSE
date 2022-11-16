@@ -25,7 +25,7 @@ public:
 	/**
 	* the getter-function for the particle_counter
 	*/
-	const int getParticle_counter() const;
+	int getParticle_counter() const;
 
 	/**
 	* the getter-function for the container of the particle

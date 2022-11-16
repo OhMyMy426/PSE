@@ -60,7 +60,7 @@ void Generator::initialise(std::vector<Cuboid>& cuboids, ParticleContainer& part
                     position.at(0) += i * n.getMeshWidth();
                     position.at(1) += j * n.getMeshWidth();
                     position.at(2) += k * n.getMeshWidth();
-                    generateBrownianMovement = maxwellBoltzmannDistributedVelocity(n.getBrownianMotionVelocity(), 3);
+                    generateBrownianMovement = maxwellBoltzmannDistributedVelocity(n.getBrownianMotionVelocity(), n.getDimensions());
                     particleContainer.getParticles().emplace(map_counter, Particle(position, (n.getInitialVelocity()+generateBrownianMovement), n.getParticleMass(), 0));
                     map_counter++;
                 }

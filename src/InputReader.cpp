@@ -91,6 +91,7 @@ void InputReader::startInteractiveCommandLine(std::vector<Cuboid>& cuboids, doub
                 double particleMass = .0;
                 std::array<double,3> initialVelocity {};
                 double brownianMotionVelocity = .0;
+                int dimensions = 0;
                 std::cout << "Please input the Coordinates of the left lower Corner." << std::endl;
                 std::cout << "\tThe first coordinate: ";
                 std::cin >> leftLowerCorner.at(0);
@@ -118,9 +119,10 @@ void InputReader::startInteractiveCommandLine(std::vector<Cuboid>& cuboids, doub
                 std::cin >> initialVelocity.at(2);
                 std::cout << "Please input the average for the Brownian Motion: ";
                 std::cin >> brownianMotionVelocity;
- 
+                std::cout << "Please input the Dimensions: ";
+                std::cin >> dimensions;
 
-                cuboids.emplace_back(Cuboid(leftLowerCorner, amountOfParticles, meshWidth, particleMass, initialVelocity, brownianMotionVelocity));
+                cuboids.emplace_back(Cuboid(leftLowerCorner, amountOfParticles, meshWidth, particleMass, initialVelocity, brownianMotionVelocity, dimensions));
                     }
                 break;
             case 'S': 

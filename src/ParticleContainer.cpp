@@ -12,7 +12,7 @@
 
 
 
-	const int ParticleContainer::getParticle_counter() const {
+	int ParticleContainer::getParticle_counter() const {
 		return particle_counter;
 	}
 	 std::unordered_map<int, Particle> &ParticleContainer::getParticles()  {

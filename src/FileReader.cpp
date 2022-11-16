@@ -74,7 +74,7 @@ void FileReader::readFile(ParticleContainer& particleContainer, const char* file
       std::cout << "Read line: " << tmp_string << std::endl;
     }
   } else {
-    std::cout << "Error: could not open file " << filename << std::endl;
+    std::cout << "Error: could not open file " << filename << ". The program will terminate now!" << std::endl;
     exit(-1);
   }
 }
@@ -86,6 +86,7 @@ void FileReader::readFileCuboids(std::vector<Cuboid>& CuboidVektor, const char* 
   double particleMass;
   std::array<double, 3> initialVelocity;
   double brownianMotionVelocity = .0;
+  int dimensions = 0;
   int num_particles;
 
   std::ifstream input_file(filename);
@@ -148,14 +149,15 @@ void FileReader::readFileCuboids(std::vector<Cuboid>& CuboidVektor, const char* 
         exit(-1);
       }
       datastream >> brownianMotionVelocity;
+      datastream >> dimensions;
 
-      CuboidVektor.emplace_back(Cuboid(leftLowerCorner, amoutOfParticles, meshWidth, particleMass, initialVelocity, brownianMotionVelocity));
+      CuboidVektor.emplace_back(Cuboid(leftLowerCorner, amoutOfParticles, meshWidth, particleMass, initialVelocity, brownianMotionVelocity, dimensions));
 
       getline(input_file, tmp_string);
       std::cout << "Read line: " << tmp_string << std::endl;
     }
   } else {
-    std::cout << "Error: could not open file " << filename << std::endl;
+    std::cout << "Error: could not open file " << filename << ". The program will terminate now!" << std::endl;
     exit(-1);
   }
 }

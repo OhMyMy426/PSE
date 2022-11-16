@@ -6,6 +6,7 @@
 #include <array>
 #include "OutputWriter.h"
 #include <iostream>
+#include <chrono>
 
 
 Simulator::Simulator() = default;
@@ -20,7 +21,19 @@ void Simulator::runSimulation(ParticleContainer& particleContainer, double& end_
   const double start_time = 0;
   double current_time = start_time;
   int iteration = 0;
+  char timeSelection = 'x';
+
+  std::cout << "Would you like to measure the raw time of the simulation (Particles already set up)? No output files will be generated. Please input Y/N: ";
+  std::cin >> timeSelection;
+
+  while (timeSelection != 'N' && timeSelection != 'Y') {
+    std::cout << "Invalid input for time detection. Please input Y/N: ";
+  std::cin >> timeSelection;
+  }
   
+
+  //Setting up time measurement
+  auto start = std::chrono::high_resolution_clock::now();
 
   //This runs the simulation
   while (current_time < end_time) {
@@ -55,18 +68,20 @@ void Simulator::runSimulation(ParticleContainer& particleContainer, double& end_
   }
 
 
-  //increase the Iteration and plot if necc
+  //increase the Iteration and plot if necc. IF we measure the time, output is skipped
   iteration++;
-  if (iteration % 10 == 0) {
+  if (iteration % 10 == 0 && timeSelection == 'N') {
     outputWriter.VTKOutput(particleContainer, iteration, "Simulation2");
   }
-//    std::cout << "Iteration " << iteration << " finished." << std::endl;
-
-
+//std::cout << "Iteration " << iteration << " finished." << std::endl;
   //increase the current time
   current_time += delta_t;
   }
+    //if asked, we output the time for the raw Simulation
+  auto stop = std::chrono::high_resolution_clock::now();
+  if (timeSelection == 'Y') {
+    std::cout << "Elapsed time in seconds: " << std::chrono::duration_cast<std::chrono::seconds>(stop - start).count() << " seconds, or " << std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count() << " in milliseconds." << std::endl;      
+  }
 
-  
   
 }
