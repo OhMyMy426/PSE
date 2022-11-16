@@ -3,10 +3,12 @@ name: UnitTests
 on:
   push:
     branches:  
-      - "AlexTestBranch" 
+      - "AlexTestBranch"
+      - "main"
   pull_request:
     branches:
-      - "AlexTestBranch" 
+      - "AlexTestBranch"
+      - "main" 
   
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
