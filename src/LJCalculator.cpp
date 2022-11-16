@@ -7,6 +7,15 @@ LJCalculator::LJCalculator() = default;
 
 LJCalculator::~LJCalculator() = default;
 
+/**
+ * Calcuaate the force between two particles with the Lennard-Jones-Potential and add the result on both particles according to Newtons III. law 
+ *
+ * @param firstParticle The first particle for the force calculation
+ * @param secondParticle The second particle for the force calculation
+ * @param sigma The sigma for the LJ-Potential
+ * @param epsilon The epsilon for the LJ-Potential
+ */
+
 void LJCalculator::calculateF_LJ(Particle& firstParticle, Particle& secondParticle, double& sigma, double& epsilon) {
     //the l2 Norm of x_i - x_j, since it is frequently used
     double l2Norm = ArrayUtils::L2Norm(firstParticle.getX()-secondParticle.getX());

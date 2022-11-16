@@ -38,7 +38,12 @@ Generator::Generator(std::vector<Cuboid>& Cuboids_args) :Cuboids(Cuboids_args) {
 
 
 
-//initialises the given unordered_map for the ParticleContainer
+/**
+ * Generate the particles specified in the vector of Cuboids into the unorederd_map of the aprticleContainer
+ *
+ * @param cuboids the vector of cuboids that hold the data for the particles that should be generated
+ * @param particleContainer The particlecontainer in which all the particles should be put into
+ */
 void Generator::initialise(std::vector<Cuboid>& cuboids, ParticleContainer& particleContainer) {
     std::array<double, 3> generateBrownianMovement {.0,.0,.0};
     for (Cuboid n : cuboids) {

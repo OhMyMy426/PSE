@@ -13,6 +13,7 @@
 
 //This is the Main Class of the new Project. From here, the simulation of the first and second homework can be started
 
+
 int main(int argc, char *argsv[]) {
     //first, the user is asked for the week he wants to run
     std::cout << "Hello and welcome to Molecular Simulations. Please choose the week you would like to use. Week one (\'1\') is Simulation of Planets, week two (\'2\') Lennard-Jones-Potential" << std::endl;

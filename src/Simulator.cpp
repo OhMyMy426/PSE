@@ -13,7 +13,16 @@ Simulator::Simulator() = default;
 
 Simulator::~Simulator() = default;
 
+/**
+ * Runs the entire simulation for week 2. Can benchmark.
+ *
+ * @param particleContainer the ParticleContainer with the particles to simulate
+ * @param end_rime The End-Time of the simulation
+ * @param delta_t The delta_t of the simulation
+ * @param epsilon The epsilon for the force Calculation with the LJ-Potential
+ * @param sigma The sigma for the force Calculation with the LJ-Potential
 
+ */
 void Simulator::runSimulation(ParticleContainer& particleContainer, double& end_time, double& delta_t, double& epsilon, double& sigma) {
   //setting up
   LJCalculator calculator;
