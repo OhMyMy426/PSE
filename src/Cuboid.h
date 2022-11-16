@@ -5,12 +5,33 @@
 
 class Cuboid {
 private:
-    std::array<double,3> leftLowerCorner;                     //The coordinate of the lower left front-side corner
-    std::array<int,3> amountOfParticles;     //Number of particles per dimension: N1 × N2 × N3
-    double meshWidth;                           //Distance h of the particles (mesh width of the grid)
-    double particleMass;                        //Mass m of one particle
-    std::array<double,3> initialVelocity;       //Initial velocity v of the particles (3 Components)
-    double brownianMotionVelocity;              //The mean-value of the velocity of the Brownian Motion
+  /**
+   * The coordinates of the left lower corner
+   */
+    std::array<double,3> leftLowerCorner; 
+   /**
+   * The amout of particles in the cuboid N1 x N2 x N3
+   */                   
+    std::array<int,3> amountOfParticles;
+  /**
+   * The meshWidth of the Particles in the Cuboid
+   */     
+    double meshWidth;   
+  /**
+   * The mass of a single particle. All particlemasses are the same in one cuboid
+   */                        
+    double particleMass;   
+  /**
+   * The initial velocity of the particles
+   */                     
+    std::array<double,3> initialVelocity;     
+  /**
+   * The average for the calculation of the brownian motion for the particles
+   */  
+    double brownianMotionVelocity;        
+  /**
+   * The amount of dimensions of the Simulation for this Cuboid. 2 or 3
+   */     
     int dimensions;
 
 

@@ -23,6 +23,12 @@ FileReader::FileReader() = default;
 
 FileReader::~FileReader() = default;
 
+/**
+ * Read in a File of particles for week 1 - Planets.
+ *
+ * @param particleContainer The particleContainer in which the particles should be read into
+ * @param filename The filename of the inputfile
+ */
 void FileReader::readFile(ParticleContainer& particleContainer, const char* filename) { //changed FileReader arguments
   std::array<double, 3> x;
   std::array<double, 3> v;
@@ -79,6 +85,12 @@ void FileReader::readFile(ParticleContainer& particleContainer, const char* file
   }
 }
 
+/**
+ * Read in a File of particles for week 2 - LJ-Potaential.
+ *
+ * @param CuboidVektor A Vektor of cuboids in that the cuboids specified in the file should be added to
+ * @param filename The filename of the inputfile
+ */
 void FileReader::readFileCuboids(std::vector<Cuboid>& CuboidVektor, const char* filename) { //changed FileReader arguments
   std::array<double, 3> leftLowerCorner;
   std::array<int, 3> amoutOfParticles;
