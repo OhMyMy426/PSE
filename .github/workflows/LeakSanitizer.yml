@@ -1,0 +1,55 @@
+name: Sanitizer Leak
+
+on:
+  push:
+    branches:  
+      - "AlexTestBranch" 
+  pull_request:
+    branches:
+      - "AlexTestBranch" 
+  
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    # linux bc cluster is linux, too
+  
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      
+    - name: xerces-c
+      run: wget https://dlcdn.apache.org//xerces/c/3/sources/xerces-c-3.2.4.tar.gz 
+      
+    - name: unwrap1
+      run: gzip -d xerces-c-3.2.4.tar.gz
+    - name: unwrap2
+      run: tar -xf xerces-c-3.2.4.tar
+      
+    - name: changedirectory2
+      run: cd xerces-c-3.2.4
+      
+    - name: cmakeXer
+      run: cmake xerces-c-3.2.4 -B ${{github.workspace}}/install
+      
+    - name: installXer
+      working-directory: ${{github.workspace}}/install
+      run: sudo make install
+    
+    - name: Configure CMake
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DMYFLAGS="-fsanitize=leak"
+
+#    - name: Build
+#      # Build your program with the given configuration
+#      run: cmake --build  --config ${{env.BUILD_TYPE}}
+
+    - name: Sanitize
+      working-directory: ${{github.workspace}}/build
+      # Execute tests defined by the CMake configuration.  
+      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
+      run: make 
