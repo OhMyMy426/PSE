@@ -15,7 +15,8 @@ void InputReader::startInteractiveCommandLine(std::vector<Cuboid>& cuboids, doub
     std::string inputFile = "";
     FileReader fileReader;
     std::string inputString = "";
-    std::cout << "Welcome to Week 2" << std::endl;
+    spdlog::info("Welcome to Week 2");
+    
     while (true) {
       spdlog::info("The status quo is:");
         spdlog::info("\t- The End-Time is set to {}",end_time);
