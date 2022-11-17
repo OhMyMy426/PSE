@@ -1,6 +1,7 @@
 #pragma once
 #include <array>
 #include <iostream>   
+
 //Author: Alex
 //This is a class that was made to get and store the input for the second Task of PSE.
 
