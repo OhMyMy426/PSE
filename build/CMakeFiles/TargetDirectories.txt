@@ -1,0 +1,3 @@
+/mnt/c/users/alpha/desktop/pse1/pse/build/CMakeFiles/rebuild_cache.dir
+/mnt/c/users/alpha/desktop/pse1/pse/build/CMakeFiles/edit_cache.dir
+/mnt/c/users/alpha/desktop/pse1/pse/build/CMakeFiles/MolSim.dir

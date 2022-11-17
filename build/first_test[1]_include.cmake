@@ -1,0 +1,5 @@
+if(EXISTS "/mnt/c/users/alpha/desktop/pse1/pse/build/first_test[1]_tests.cmake")
+  include("/mnt/c/users/alpha/desktop/pse1/pse/build/first_test[1]_tests.cmake")
+else()
+  add_test(first_test_NOT_BUILT first_test_NOT_BUILT)
+endif()
