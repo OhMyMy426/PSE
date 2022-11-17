@@ -5,10 +5,12 @@ on:
     branches:  
       - "AlexTestBranch"
       - "main"
+      - "Youssefstestbranch"
   pull_request:
     branches:
       - "AlexTestBranch"
       - "main" 
+      - "Youssefstestbranch"
   
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
