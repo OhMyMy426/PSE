@@ -69,6 +69,10 @@ int main(int argc, char *argsv[]) {
                 //calling of the command line
                 InputReader inputReader;
                 inputReader.startInteractiveCommandLine(cuboids, end_time, delta_t, sigma, epsilon);
+                if(cuboids.size() == 0) {
+                spdlog::error("No Particles set up! Please set up particles! The program will end now");
+                        exit(-1);
+                }
                 //initialise the unordered Map and the counter that the generator fills that then goes into the ParticleContainer for the Simulation in Simulator
                 std::unordered_map<int, Particle> particles {};
                 int particle_counter = 0;

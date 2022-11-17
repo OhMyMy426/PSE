@@ -11,6 +11,7 @@
 #include "outputWriter/vtk-unstructured.h"
 
 #include <list>
+#include"spdlog/spdlog.h"
 
 namespace outputWriter {
 

@@ -54,10 +54,10 @@ void FileReader::readFile(ParticleContainer& particleContainer, const char* file
     std::istringstream numstream(tmp_string);
     numstream >> num_particles;
     spdlog::info("Reading: {}.",num_particles);
-   // std::cout << "Reading " << num_particles << "." << std::endl;
+   
     getline(input_file, tmp_string);
     spdlog::info("Read line: {}",tmp_string);
-    //std::cout << "Read line: " << tmp_string << std::endl;
+    
 
     particleContainer.getParticles().reserve(num_particles);
 
@@ -88,7 +88,6 @@ void FileReader::readFile(ParticleContainer& particleContainer, const char* file
     }
   } else {
     spdlog::warn("Error: could not open file {}. The program will terminate now!",filename);
-    std::cout << "Error: could not open file " << filename << ". The program will terminate now!" << std::endl;
     exit(-1);
   }
 }
@@ -126,7 +125,6 @@ void FileReader::readFileCuboids(std::vector<Cuboid>& CuboidVektor, const char* 
     std::istringstream numstream(tmp_string);
     numstream >> num_particles;
     spdlog::info("Reading: {}",num_particles);
-    std::cout << "Reading " << num_particles << "." << std::endl;
     getline(input_file, tmp_string);
     spdlog::info("Read line: {}",tmp_string);
 
@@ -173,7 +171,6 @@ void FileReader::readFileCuboids(std::vector<Cuboid>& CuboidVektor, const char* 
     }
   } else {
      spdlog::info("Error: could not open file {}. The program will terminate now!",filename);
-    std::cout << "Error: could not open file " << filename << ". The program will terminate now!" << std::endl;
     exit(-1);
   }
 }

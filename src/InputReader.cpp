@@ -24,11 +24,11 @@ void InputReader::startInteractiveCommandLine(std::vector<Cuboid>& cuboids, doub
         spdlog::info("\t- The epsilon is set to {} ",epsilon);
         spdlog::info("\t- The sigma is set to {}",sigma);
         if (cuboids.size() == 0) {
-            spdlog::warn(" \t- You have {} cuboids set up.");
-            std::cout << "\t- You have no cuboids set up so far." << std::endl;
+            spdlog::warn("\t- You have no cuboids set up so far.");
+            
         } else {
-            spdlog::info("\t- You have no cuboids set up so far.", cuboids.size());
-            std::cout << "\t- You have " << cuboids.size() << " cuboids set up." << std::endl;
+            spdlog::info(" \t- You have {} cuboids set up.", cuboids.size());
+           
         }
         spdlog::info("If you would like to view your Cuboids, type in \'C\'.\nTo set up a new Cuboid manually, type in \'M\'.\nTo read in a File, type in \'F\'. \nTo set the End-Time or Delta_t, use \'E\' or \'D\', respectively.\n\'P\' is for setting the epsilon, \'I\' sets the sigma. \n\'S\' starts the Simulation.");
         
@@ -39,33 +39,27 @@ void InputReader::startInteractiveCommandLine(std::vector<Cuboid>& cuboids, doub
             case 'C': 
                 if (cuboids.size() == 0) {
                      spdlog::info("You have no cuboids set up so far.");
-                    std::cout << "You have no cuboids set up so far.";
+                    
                 } else {
                     for (int i = 0; i < (int) cuboids.size(); ++i) {
-                        spdlog::info("Cuboid number {}",i);
-                       
-                        std::cout << cuboids.at(i) << std::endl;
+                        spdlog::info("Cuboid number {}",i);    
                     }
-                    std::cout << std::endl;
+                    
                 }
                 break;
             case 'E':
-            spdlog::info("The current End-Time is : {} \n\t Please input a new value:",end_time);
-               
+                spdlog::info("The current End-Time is : {} \n\t Please input a new value:",end_time);
                 std::cin >> end_time;
                 while (end_time <= 0.0) {
                     spdlog::warn("This is an invalid time. Please input a new one: ");
-                    std::cout << "This is an invalid time. Please input a new one: ";
                     std::cin >> end_time;
                 }
                 break;
             case 'D':
-            spdlog::info("The current Delta_t is :{}.\n\t Please input a new value: ",delta_t);
-                
+                spdlog::info("The current Delta_t is :{}.\n\t Please input a new value: ",delta_t);
                 std::cin >> delta_t;
                 while (delta_t <= 0.0) {
-                    spdlog::warn("This is an invalid time. Please input a new one: ");
-                    
+                    spdlog::warn("This is an invalid time. Please input a new one: ");                   
                     std::cin >> delta_t;
                 }
                 break;
@@ -90,8 +84,7 @@ void InputReader::startInteractiveCommandLine(std::vector<Cuboid>& cuboids, doub
                 break;
             case 'F':
                     {
-                         spdlog::info("Please input a file: ");
-                
+                spdlog::info("Please input a file: ");               
                 std::cin >> inputFile;
                 const char* inputFilePointer = inputFile.c_str();
                 fileReader.readFileCuboids(cuboids, inputFilePointer);
@@ -207,14 +200,11 @@ void InputReader::startInteractiveCommandLine(std::vector<Cuboid>& cuboids, doub
                     }
                 break;
             case 'S': 
-            spdlog::info("Simulation started!" );
-                
+               spdlog::info("Simulation started!" );               
                 return;
             default:
-             spdlog::warn("Bad option, please try again!" );
-             
-               
-            
+              spdlog::warn("Bad option, please try again!" );
+
                 break;
         }
 
