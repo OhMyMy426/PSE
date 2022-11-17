@@ -30,7 +30,7 @@ void InputReader::startInteractiveCommandLine(std::vector<Cuboid>& cuboids, doub
             spdlog::info(" \t- You have {} cuboids set up.", cuboids.size());
            
         }
-        spdlog::info("If you would like to view your Cuboids, type in \'C\'.\nTo set up a new Cuboid manually, type in \'M\'.\nTo read in a File, type in \'F\'. \nTo set the End-Time or Delta_t, use \'E\' or \'D\', respectively.\n\'P\' is for setting the epsilon, \'I\' sets the sigma. \n\'S\' starts the Simulation.");
+        spdlog::info("\nIf you would like to view your Cuboids, type in \'C\'.\nTo set up a new Cuboid manually, type in \'M\'.\nTo read in a File, type in \'F\'. \nTo set the End-Time or Delta_t, use \'E\' or \'D\', respectively.\n\'P\' is for setting the epsilon, \'I\' sets the sigma. \n\'S\' starts the Simulation.");
         
         char chosenOption = 'x'; 
         std::cin >> chosenOption;
