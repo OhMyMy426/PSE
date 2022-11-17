@@ -46,6 +46,7 @@ target_link_libraries(MolSim
         PUBLIC
 	xerces-c
 	PRIVATE
+	{MYFLAGS}
 )
 
 set(MyList "src/MainClass.cpp" "src/FileReader.cpp"  "src/Cuboid.cpp" "src/InputReader.cpp" "src/Generator.cpp" "src/Calculator.cpp"  "src/LJCalculator.cpp"  "src/MolSim.cpp"  "src/OutputWriter.cpp" "src/Particle.cpp" "src/ParticleContainer.cpp" "src/Simulator.cpp")
