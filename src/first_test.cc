@@ -2,6 +2,8 @@
 #include "ParticleContainer.cpp"
 #include "Particle.cpp"
 #include <unordered_map>
+#include "LJCalculator.h"
+
 
 void Factorial(int n, int& result)
 {
@@ -38,7 +40,7 @@ TEST(ParticaleContainerTest, Easy_Test1) {
   std::unordered_map<int, Particle> particles;
   int particle_counter = 20;
   static ParticleContainer particleContainer(particles, particle_counter);
-  particleContainer.setParticleCounter(25);
+  particleContainer.setParticleCounter(20);
   EXPECT_EQ(20, particleContainer.getParticle_counter());
 }
 
@@ -47,6 +49,7 @@ TEST(ParticaleContainerTest, Easy_Test2) {
   int particle_counter1 = 20;
   static ParticleContainer particleContainer(particles, particle_counter1);
   int particle_counter2 = 25;
-  static ParticleContainer particleContainer(particles, particle_counter2);
-  EXPECT_EQ(25, particleContainer.getParticle_counter());
+  static ParticleContainer particleContainer1(particles, particle_counter2);
+  EXPECT_EQ(25, particleContainer1.getParticle_counter());
 }
+

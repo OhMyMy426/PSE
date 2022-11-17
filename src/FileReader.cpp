@@ -86,7 +86,7 @@ void FileReader::readFile(ParticleContainer& particleContainer, const char* file
 }
 
 /**
- * Read in a File of particles for week 2 - LJ-Potaential.
+ * Read in a File of particles for week 2 - LJ-Potaential into a vecto of Cuboids. This one can be empty or already have Cuboids. Please take care not to place particles with different Types at the same place :/
  *
  * @param CuboidVektor A Vektor of cuboids in that the cuboids specified in the file should be added to
  * @param filename The filename of the inputfile
