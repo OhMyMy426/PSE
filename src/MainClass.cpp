@@ -20,7 +20,9 @@ int main(int argc, char *argsv[]) {
 
 
 
-
+    if (argc<2)
+    {spdlog::error("Spdlog level needed");
+    exit(-1);}
     if(std::string(argsv[1])=="TRACE")
     {spdlog::set_level(spdlog::level::trace);}
     if(std::string(argsv[1])=="DEBUG")
