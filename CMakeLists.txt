@@ -45,16 +45,18 @@ target_link_libraries(MolSim
         # stuff that is used in headers and source files
         PUBLIC
             xerces-c
-	    ${MYFLAGS}
+	    
 )
 
+set(MyList "src/MainClass.cpp" "src/FileReader.cpp"  "src/Cuboid.cpp" "src/InputReader.cpp" "src/Generator.cpp" "src/Calculator.cpp"  "src/LJCalculator.cpp"  "src/MolSim.cpp"  "src/OutputWriter.cpp" "src/Particle.cpp" "src/ParticleContainer.cpp" "src/Simulator.cpp")
+set_source_files_properties(${MyList} PROPERTIES COMPILE_OPTIONS ${MYFLAGS})
 
 #define the flags
 # activate all compiler warnings. Clean up your code :P
 # depending on the compiler different flags are used
 target_compile_options(MolSim
         PRIVATE
-            $<$<CXX_COMPILER_ID:GNU>: -Wall ${MYFLAGS}>
+            $<$<CXX_COMPILER_ID:GNU>: -Wall >
             # disable some spam warnings for icpc...
             $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
 )
