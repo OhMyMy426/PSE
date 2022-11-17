@@ -13,6 +13,7 @@
 #include "ParticleContainer.h"
 #include <unistd.h>
 #include "MolSim.h"
+#include"spdlog/spdlog.h"
 
 
 MolSim::MolSim() = default;
@@ -21,7 +22,7 @@ MolSim::~MolSim() = default;
 
 /**** forward declaration of the calculation functions ****/
 
-/**
+/**s
  * calculate the force for all particles
  */
 void calculateF(ParticleContainer& particleContainer);
@@ -75,12 +76,13 @@ MolSim::firstWeek(ParticleContainer& particleContainer, double& end_time, double
 
         plotParticles(iteration, particleContainer);
     }
-    std::cout << "Iteration " << iteration << " finished." << std::endl;
+    spdlog::info( "Iteration {} finished. ",iteration);
+    
 
     current_time += delta_t;
   }
-
-  std::cout << "output written. Terminating..." << std::endl;
+spdlog::info( "output written. Terminating...");
+  
   return 0;
 }
 
