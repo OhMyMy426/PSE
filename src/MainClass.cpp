@@ -16,7 +16,27 @@
 
 
 int main(int argc, char *argsv[]) {
+
+
+
+
+
+    if(std::string(argsv[1])=="TRACE")
+    {spdlog::set_level(spdlog::level::trace);}
+    if(std::string(argsv[1])=="DEBUG")
+    {spdlog::set_level(spdlog::level::debug);}
+    if(std::string(argsv[1])=="INFO")
+    {spdlog::set_level(spdlog::level::info);}
+    if(std::string(argsv[1])=="WARN")
+    {spdlog::set_level(spdlog::level::warn);}
+    if(std::string(argsv[1])=="ERROR")
+    {spdlog::set_level(spdlog::level::err);}
+    if(std::string(argsv[1])=="CRITICAL")
+    {spdlog::set_level(spdlog::level::critical);}
+    if(std::string(argsv[1])=="OFF")
+    {spdlog::set_level(spdlog::level::off);}
     //first, the user is asked for the week he wants to run
+    
     spdlog::info("Hello and welcome to Molecular Simulations. Please choose the week you would like to use. Week one (\'1\') is Simulation of Planets, week two (\'2\') Lennard-Jones-Potential");
     
     int chosenWeek = 0;
