@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 
 #
-set(MYFLAGS)
+if (NOT DEFINED MYFLAGS)
+  set(MYFLAGS "-Wall")
+endif()
+
 
 # define project name, version
 project(PSEMolDyn_GroupB VERSION 0.0.1)
