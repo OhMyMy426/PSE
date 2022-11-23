@@ -5,7 +5,6 @@ if (NOT DEFINED MYFLAGS)
   set(MYFLAGS "-Wall")
 endif()
 
-
 # define project name, version
 project(PSEMolDyn_GroupB VERSION 0.0.1)
 
@@ -33,6 +32,7 @@ target_compile_features(MolSim
         PRIVATE
             cxx_std_14
 )
+include_directories(${CMAKE_SOURCE_DIR}/src)
 
 target_include_directories(MolSim
         PUBLIC SYSTEM
@@ -44,8 +44,9 @@ target_include_directories(MolSim
 target_link_libraries(MolSim
         # stuff that is used in headers and source files
         PUBLIC
-            xerces-c
-	    
+	xerces-c
+	PRIVATE
+	${MYFLAGS}
 )
 
 set(MyList "src/MainClass.cpp" "src/FileReader.cpp"  "src/Cuboid.cpp" "src/InputReader.cpp" "src/Generator.cpp" "src/Calculator.cpp"  "src/LJCalculator.cpp"  "src/MolSim.cpp"  "src/OutputWriter.cpp" "src/Particle.cpp" "src/ParticleContainer.cpp" "src/Simulator.cpp")
@@ -70,3 +71,47 @@ include(doxygen)
 ## add_custom_target( doc_doxygen 
 #   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 #    VERBATIM )
+
+include(doxygen)
+
+## set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR})
+
+## add_custom_target( doc_doxygen 
+#   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+#    VERBATIM )
+
+
+####    GoogleTest
+# GoogleTest requires at least C++14
+set(CMAKE_CXX_STANDARD 14)
+
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/refs/tags/release-1.12.1.zip
+)
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+#set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
+enable_testing()
+
+add_executable(
+  first_test
+ # ${MY_SRC}
+  src/first_test.cc
+	src/spdlog
+	
+)
+
+include_directories(${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(
+  first_test
+  GTest::gtest_main
+	xerces-c
+)
+
+
+
+include(GoogleTest)
+gtest_discover_tests(first_test)
