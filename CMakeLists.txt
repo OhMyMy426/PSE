@@ -39,6 +39,7 @@ target_link_libraries(MolSim
         # stuff that is used in headers and source files
         PUBLIC
             xerces-c
+        Private
             ${MYFLAGS}  
 )
 
