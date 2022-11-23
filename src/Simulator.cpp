@@ -7,6 +7,7 @@
 #include "OutputWriter.h"
 #include <iostream>
 #include <chrono>
+#include"spdlog/spdlog.h"
 
 
 Simulator::Simulator() = default;
@@ -32,11 +33,11 @@ void Simulator::runSimulation(ParticleContainer& particleContainer, double& end_
   int iteration = 0;
   char timeSelection = 'x';
 
-  std::cout << "Would you like to measure the raw time of the simulation (Particles already set up)? No output files will be generated. Please input Y/N: ";
+  spdlog::info("Would you like to measure the raw time of the simulation (Particles already set up)? No output files will be generated. Please input Y/N: ");
   std::cin >> timeSelection;
 
   while (timeSelection != 'N' && timeSelection != 'Y') {
-    std::cout << "Invalid input for time detection. Please input Y/N: ";
+  spdlog::error( "Invalid input for time detection. Please input Y/N: ");
   std::cin >> timeSelection;
   }
   
@@ -89,10 +90,10 @@ void Simulator::runSimulation(ParticleContainer& particleContainer, double& end_
     //if asked, we output the time for the raw Simulation
   auto stop = std::chrono::high_resolution_clock::now();
   if (timeSelection == 'Y') {
-    std::cout << "Elapsed time in seconds: " << std::chrono::duration_cast<std::chrono::seconds>(stop - start).count() << " seconds, or " << std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count() << " in milliseconds." << std::endl;      
+    auto endtime_s = std::chrono::duration_cast<std::chrono::seconds>(stop - start).count();
+    auto endtime_ms = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count();
+    spdlog::info ("Elapsed time in seconds: {} seconds, or {} in milliseconds.", endtime_s, endtime_ms);      
   }
 
   
 }
-
-

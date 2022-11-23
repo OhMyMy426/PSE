@@ -5,6 +5,7 @@
 #include "InputReader.h"
 #include "ParticleContainer.h"
 #include "Particle.h"
+#include"spdlog/spdlog.h"
 
 InputReader::InputReader() = default;
 
@@ -14,73 +15,81 @@ void InputReader::startInteractiveCommandLine(std::vector<Cuboid>& cuboids, doub
     std::string inputFile = "";
     FileReader fileReader;
     std::string inputString = "";
-    std::cout << "Welcome to Week 2" << std::endl;
+    spdlog::info("Welcome to Week 2");
+    
     while (true) {
-        std::cout << "The status quo is:" << std::endl;
-        std::cout << "\t- The End-Time is set to " << end_time << "." << std::endl;
-        std::cout << "\t- The Delta_t is set to " << delta_t << "." << std::endl;
-        std::cout << "\t- The epsilon is set to " << epsilon << "." << std::endl;
-        std::cout << "\t- The sigma is set to " << sigma << "." << std::endl;
+      spdlog::info("The status quo is:");
+        spdlog::info("\t- The End-Time is set to {}",end_time);
+        spdlog::info("\t- The Delta_t is set to {}",delta_t);
+        spdlog::info("\t- The epsilon is set to {} ",epsilon);
+        spdlog::info("\t- The sigma is set to {}",sigma);
         if (cuboids.size() == 0) {
-            std::cout << "\t- You have no cuboids set up so far." << std::endl;
+            spdlog::warn("\t- You have no cuboids set up so far.");
+            
         } else {
-            std::cout << "\t- You have " << cuboids.size() << " cuboids set up." << std::endl;
+            spdlog::info(" \t- You have {} cuboids set up.", cuboids.size());
+           
         }
-        std::cout << "If you would like to view your Cuboids, type in \'C\'.\nTo set up a new Cuboid manually, type in \'M\'.\nTo read in a File, type in \'F\'. \nTo set the End-Time or Delta_t, use \'E\' or \'D\', respectively.\n\'P\' is for setting the epsilon, \'I\' sets the sigma. \n\'S\' starts the Simulation." << std::endl;
+        spdlog::info("\nIf you would like to view your Cuboids, type in \'C\'.\nTo set up a new Cuboid manually, type in \'M\'.\nTo read in a File, type in \'F\'. \nTo set the End-Time or Delta_t, use \'E\' or \'D\', respectively.\n\'P\' is for setting the epsilon, \'I\' sets the sigma. \n\'S\' starts the Simulation.");
+        
         char chosenOption = 'x'; 
         std::cin >> chosenOption;
 
         switch(chosenOption) {
             case 'C': 
                 if (cuboids.size() == 0) {
-                    std::cout << "You have no cuboids set up so far.";
+                     spdlog::info("You have no cuboids set up so far.");
+                    
                 } else {
                     for (int i = 0; i < (int) cuboids.size(); ++i) {
-                        std::cout << "Cuboid number " << i << " :" << std::endl;
-                        std::cout << cuboids.at(i) << std::endl;
+                        spdlog::info("Cuboid number {}",i);    
                     }
-                    std::cout << std::endl;
+                    
                 }
                 break;
             case 'E':
-                std::cout << "The current End-Time is :" << end_time << ".\n\t Please input a new value: ";
+                spdlog::info("The current End-Time is : {} \n\t Please input a new value:",end_time);
                 std::cin >> end_time;
                 while (end_time <= 0.0) {
-                    std::cout << "This is an invalid time. Please input a new one: ";
+                    spdlog::warn("This is an invalid time. Please input a new one: ");
                     std::cin >> end_time;
                 }
                 break;
             case 'D':
-                std::cout << "The current Delta_t is :" << delta_t << ".\n\t Please input a new value: ";
+                spdlog::info("The current Delta_t is :{}.\n\t Please input a new value: ",delta_t);
                 std::cin >> delta_t;
                 while (delta_t <= 0.0) {
-                    std::cout << "This is an invalid time. Please input a new one: ";
+                    spdlog::warn("This is an invalid time. Please input a new one: ");                   
                     std::cin >> delta_t;
                 }
                 break;
             case 'I':
-                std::cout << "The current Sigma is :" << sigma << ".\n\t Please input a new value: ";
+                spdlog::info("The current sigma is :{}.\n\t Please input a new value: ",sigma);
                 std::cin >> sigma;
                 while (sigma <= 0.0) {
-                    std::cout << "This is an invalid time. Please input a new one: ";
+                    spdlog::warn("This is an invalid time. Please input a new one: ");
+                    
                     std::cin >> sigma;
                 }
                 break;
             case 'P':
-                std::cout << "The current Epsilon is :" << epsilon << ".\n\t Please input a new value: ";
+            spdlog::info("The current epsilon is :{}.\n\t Please input a new value: ",epsilon);
+                
                 std::cin >> epsilon;
                 while (epsilon <= 0.0) {
-                    std::cout << "This is an invalid time. Please input a new one: ";
+                    spdlog::warn("This is an invalid time. Please input a new one: ");
+                   
                     std::cin >> epsilon;
                 }
                 break;
             case 'F':
                     {
-                std::cout << "Please input a file: ";
+                spdlog::info("Please input a file: ");               
                 std::cin >> inputFile;
                 const char* inputFilePointer = inputFile.c_str();
                 fileReader.readFileCuboids(cuboids, inputFilePointer);
-                std::cout << "Particles read!" << std::endl;
+                spdlog::info("Particles read!" );
+                
                     }
                 break;
             case 'M':
@@ -92,44 +101,54 @@ void InputReader::startInteractiveCommandLine(std::vector<Cuboid>& cuboids, doub
                 std::array<double,3> initialVelocity {};
                 double brownianMotionVelocity = .0;
                 int dimensions = 0;
-                std::cout << "Please input the Coordinates of the left lower Corner." << std::endl;
-                std::cout << "\tThe first coordinate: ";
+                spdlog::info("Please input the Coordinates of the left lower Corner.");
+                spdlog::info("\tThe first coordinate: ");
+                
+               
                 std::cin >> leftLowerCorner.at(0);
-                std::cout << "\tThe second coordinate: ";
+               
+                 spdlog::info("\tThe second coordinate: ");
                 std::cin >> leftLowerCorner.at(1);
-                std::cout << "\tThe third coordinate: ";
+                 spdlog::info("\tThe third coordinate: ");
                 std::cin >> leftLowerCorner.at(2);
-                std::cout << "Please input the amout of particles in each direction." << std::endl;
-                std::cout << "\tIn x direction: ";
+                spdlog::info("Please input the amout of particles in each direction.");
+                spdlog::info("\tIn x direction: ");                
                 std::cin >> amountOfParticles.at(0);
-                std::cout << "\tIn y direction: ";
+                 spdlog::info("\tIn y direction: ");
                 std::cin >> amountOfParticles.at(1);
-                std::cout << "\tIn z direction: ";
+                 spdlog::info("\tIn z direction: ");
                 std::cin >> amountOfParticles.at(2);
-                std::cout << "Please input the width of the Mesh: ";
+                
+                spdlog::info("Please input the width of the Mesh: ");
                 std::cin >> meshWidth;
-                std::cout << "Please input the mass of a particle: ";
+                
+                spdlog::info("Please input the mass of a particle: ");
                 std::cin >> particleMass;
-                std::cout << "Please input the initial velocity of a particle in each direction." << std::endl;
-                std::cout << "\tIn x direction: ";
+                
+                spdlog::info("Please input the initial velocity of a particle in each direction.");
+                
+                spdlog::info("\tIn x direction: ");
                 std::cin >> initialVelocity.at(0);
-                std::cout << "\tIn y direction: ";
+                spdlog::info("\tIn y direction: ");
                 std::cin >> initialVelocity.at(1);
-                std::cout << "\tIn z direction: ";
+                spdlog::info("\tIn z direction: ");
                 std::cin >> initialVelocity.at(2);
-                std::cout << "Please input the average for the Brownian Motion: ";
+                
+                spdlog::info("Please input the average for the Brownian Motion: ");
                 std::cin >> brownianMotionVelocity;
-                std::cout << "Please input the Dimensions: ";
+                
+                 spdlog::info("Please input the Dimensions: ");
                 std::cin >> dimensions;
 
                 cuboids.emplace_back(Cuboid(leftLowerCorner, amountOfParticles, meshWidth, particleMass, initialVelocity, brownianMotionVelocity, dimensions));
                     }
                 break;
             case 'S': 
-                std::cout << "Simulation started!" << std::endl;
+            spdlog::info("Simulation started!");
+               
                 return;
             default:
-                std::cout << "Bad option, please try again!" << std::endl;
+            spdlog::warn("Bad option, please try again!");std::cout << "Bad option, please try again!" << std::endl;
                 break;
         }
     }
@@ -140,47 +159,52 @@ void InputReader::startInteractiveCommandLine(std::vector<Cuboid>& cuboids, doub
     std::string inputFile = "";
     FileReader fileReader;
     std::string inputString = "";
-    std::cout << "Welcome to Week 1" << std::endl;
+    spdlog::info("Welcome to Week 1");
+   
     while (true) {
-        std::cout << "The status quo is:" << std::endl;
-        std::cout << "\t- The End-Time is set to " << end_time << "." << std::endl;
-        std::cout << "\t- The Delta_t is set to " << delta_t << "." << std::endl;
-        std::cout << "To set the End-Time, please type in \'E\'. To set the Delta_t, use \'D\'. \nUse \'F\' to specify the input file. \n\'S\' starts the Simulation." << std::endl;
+        spdlog::info("The status quo is:");
+        spdlog::info("\t- The End-Time is set to {}",end_time);
+        spdlog::info("\t- The Delta_t is set to {}",delta_t);
+       spdlog::info("To set the End-Time, please type in \'E\'. To set the Delta_t, use \'D\'. \nUse \'F\' to specify the input file. \n\'S\' starts the Simulation.");
+        
 
         char chosenOption = 'x'; 
         std::cin >> chosenOption;
 
         switch(chosenOption){
             case 'E':
-                std::cout << "The current End-Time is :" << end_time << ".\n\t Please input a new value: " ;
+                spdlog::info("The current End-Time is : {} \n\t Please input a new value:",end_time);
                 std::cin >> end_time;
                 while (end_time <= 0.0) {
-                    std::cout << "This is an invalid time. Please input a new one: ";
+                    spdlog::warn("This is an invalid time. Please input a new one: ");
                     std::cin >> end_time;
                 }
                 break;
             case 'D':
-                std::cout << "The current Delta_t is :" << delta_t << ".\n\t Please input a new value: ";
+                 spdlog::info("The current Delta_t is :{}.\n\t Please input a new value: ",delta_t);
                 std::cin >> delta_t;
                 while (delta_t <= 0.0) {
-                    std::cout << "This is an invalid time. Please input a new one: ";
+                   spdlog::warn("This is an invalid time. Please input a new one: ");
                     std::cin >> delta_t;
                 }
                 break;
             case 'F':
                     {
-                std::cout << "Please input a file: ";
+                        spdlog::info("Please input a file: ");
+                
                 std::cin >> inputFile;
                 const char* inputFilePointer = inputFile.c_str();
                 fileReader.readFile(particleContainer, inputFilePointer);
-                std::cout << "Particles read!" << std::endl;
+                spdlog::info("Particles read!");
+                
                     }
                 break;
             case 'S': 
-                std::cout << "Simulation started!" << std::endl;
+               spdlog::info("Simulation started!" );               
                 return;
             default:
-                std::cout << "Bad option, please try again!" << std::endl;
+              spdlog::warn("Bad option, please try again!" );
+
                 break;
         }
 

@@ -9,7 +9,7 @@
 #include "utils/ArrayUtils.h"
 #include <unordered_map>
 #include "ParticleContainer.h"
-#include <chrono>
+#include"spdlog/spdlog.h"
 
 //a default Constructor
 Generator::Generator() {
@@ -33,7 +33,9 @@ Generator::Generator(std::vector<Cuboid>& Cuboids_args) :Cuboids(Cuboids_args) {
         size += x_size * y_size * z_size;
     }
     Particles.reserve(size);
-    std::cout << "Cuboids are already stored!" << std::endl;
+     spdlog::info("Cuboids are already stored!");
+     
+    //std::cout << "Cuboids are already stored!" << std::endl;
     
 }
 
@@ -74,8 +76,6 @@ void Generator::initialise(std::vector<Cuboid>& cuboids, ParticleContainer& part
         }
     
     }
-   
-
 }
 
 

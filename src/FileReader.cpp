@@ -17,6 +17,7 @@
 
 #include <unordered_map>
 #include "ParticleContainer.h"
+#include"spdlog/spdlog.h"
 
 
 FileReader::FileReader() = default;
@@ -41,18 +42,22 @@ void FileReader::readFile(ParticleContainer& particleContainer, const char* file
   if (input_file.is_open()) {
 
     getline(input_file, tmp_string);
-    std::cout << "Read line: " << tmp_string << std::endl;
+    spdlog::info("Read line: {}",tmp_string);
+    //std::cout << "Read line: " << tmp_string << std::endl;
 
     while (tmp_string.empty() || tmp_string[0] == '#') {
       getline(input_file, tmp_string);
-      std::cout << "Read line: " << tmp_string << std::endl;
+      spdlog::info("Read line: {}",tmp_string);
+      //std::cout << "Read line: " << tmp_string << std::endl;
     }
 
     std::istringstream numstream(tmp_string);
     numstream >> num_particles;
-    std::cout << "Reading " << num_particles << "." << std::endl;
+    spdlog::info("Reading: {}.",num_particles);
+   
     getline(input_file, tmp_string);
-    std::cout << "Read line: " << tmp_string << std::endl;
+    spdlog::info("Read line: {}",tmp_string);
+    
 
     particleContainer.getParticles().reserve(num_particles);
 
@@ -66,9 +71,10 @@ void FileReader::readFile(ParticleContainer& particleContainer, const char* file
         datastream >> vj;
       }
       if (datastream.eof()) {
-        std::cout
+        spdlog::info("Error reading file: eof reached unexpectedly reading from line ",i);
+       /* std::cout
             << "Error reading file: eof reached unexpectedly reading from line "
-            << i << std::endl;
+            << i << std::endl;*/
         exit(-1);
       }
       datastream >> m;
@@ -77,16 +83,17 @@ void FileReader::readFile(ParticleContainer& particleContainer, const char* file
       particleContainer.setParticleCounter(particleContainer.getParticle_counter()+1);
 
       getline(input_file, tmp_string);
-      std::cout << "Read line: " << tmp_string << std::endl;
+      spdlog::info("Read line: {}",tmp_string);
+      //std::cout << "Read line: " << tmp_string << std::endl;
     }
   } else {
-    std::cout << "Error: could not open file " << filename << ". The program will terminate now!" << std::endl;
+    spdlog::warn("Error: could not open file {}. The program will terminate now!",filename);
     exit(-1);
   }
 }
 
 /**
- * Read in a File of particles for week 2 - LJ-Potaential into a vecto of Cuboids. This one can be empty or already have Cuboids. Please take care not to place particles with different Types at the same place :/
+ * Read in a File of particles for week 2 - LJ-Potaential.
  *
  * @param CuboidVektor A Vektor of cuboids in that the cuboids specified in the file should be added to
  * @param filename The filename of the inputfile
@@ -107,18 +114,19 @@ void FileReader::readFileCuboids(std::vector<Cuboid>& CuboidVektor, const char* 
   if (input_file.is_open()) {
 
     getline(input_file, tmp_string);
-    std::cout << "Read line: " << tmp_string << std::endl;
+
+    spdlog::info("Read line: {}",tmp_string);
 
     while (tmp_string.empty() || tmp_string[0] == '#') {
       getline(input_file, tmp_string);
-      std::cout << "Read line: " << tmp_string << std::endl;
+      spdlog::info("Read line: {}",tmp_string);
     }
 
     std::istringstream numstream(tmp_string);
     numstream >> num_particles;
-    std::cout << "Reading " << num_particles << "." << std::endl;
+    spdlog::info("Reading: {}",num_particles);
     getline(input_file, tmp_string);
-    std::cout << "Read line: " << tmp_string << std::endl;
+    spdlog::info("Read line: {}",tmp_string);
 
     CuboidVektor.reserve(CuboidVektor.size()+num_particles);
 
@@ -129,35 +137,28 @@ void FileReader::readFileCuboids(std::vector<Cuboid>& CuboidVektor, const char* 
         datastream >> xj;
       }
       if (datastream.eof()) {
-        std::cout
-            << "Error reading file: eof reached unexpectedly reading from line "
-            << i << std::endl;
+        spdlog::info("Error reading file: eof reached unexpectedly reading from line  {}",i);
+            
         exit(-1);
       }
       for (auto &vj : amoutOfParticles) {
         datastream >> vj;
       }
       if (datastream.eof()) {
-        std::cout
-            << "Error reading file: eof reached unexpectedly reading from line "
-            << i << std::endl;
+         spdlog::info("Error reading file: eof reached unexpectedly reading from line  {}",i);
         exit(-1);
       }
       datastream >> meshWidth;
       datastream >> particleMass;
       if (datastream.eof()) {
-        std::cout
-            << "Error reading file: eof reached unexpectedly reading from line "
-            << i << std::endl;
+         spdlog::info("Error reading file: eof reached unexpectedly reading from line  {}",i);
         exit(-1);
       }
       for (auto &xj : initialVelocity) {
         datastream >> xj;
       }
       if (datastream.eof()) {
-        std::cout
-            << "Error reading file: eof reached unexpectedly reading from line "
-            << i << std::endl;
+        spdlog::info("Error reading file: eof reached unexpectedly reading from line  {}",i);
         exit(-1);
       }
       datastream >> brownianMotionVelocity;
@@ -166,10 +167,10 @@ void FileReader::readFileCuboids(std::vector<Cuboid>& CuboidVektor, const char* 
       CuboidVektor.emplace_back(Cuboid(leftLowerCorner, amoutOfParticles, meshWidth, particleMass, initialVelocity, brownianMotionVelocity, dimensions));
 
       getline(input_file, tmp_string);
-      std::cout << "Read line: " << tmp_string << std::endl;
+      spdlog::info("Read line: {}",tmp_string);
     }
   } else {
-    std::cout << "Error: could not open file " << filename << ". The program will terminate now!" << std::endl;
+     spdlog::info("Error: could not open file {}. The program will terminate now!",filename);
     exit(-1);
   }
 }

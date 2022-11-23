@@ -6,6 +6,13 @@ Calculator::Calculator() = default;
 
 Calculator::~Calculator() = default;
 
+/**
+ * Calculate the Location of a particle using the Velocity-Störmer-Verlet-Algorithm.
+ *
+ * @param firstParticle The particle for which the calculation should happen
+ * @param delta_t The delta_t for the calculation.
+ */
+
 void Calculator::calculateX(Particle& firstParticle, double& delta_t) {
     std::array<double, 3> new_x_to_calculate;
     for (int j = 0; j < 3; ++j) {
@@ -14,6 +21,12 @@ void Calculator::calculateX(Particle& firstParticle, double& delta_t) {
     firstParticle.setX(new_x_to_calculate);
 }
 
+/**
+ * Calculate the velocity of a particle using the Velocity-Störmer-Verlet-Algorithm.
+ *
+ * @param firstParticle The particle for which the calculation should happen
+ * @param delta_t The delta_t for the calculation.
+ */
 void Calculator::calculateV(Particle& firstParticle, double& delta_t) {
     std::array<double, 3> added_forces;
     std::array<double, 3> new_v_to_calculate;
