@@ -28,3 +28,14 @@ void LJCalculator::calculateF_LJ(Particle& firstParticle, Particle& secondPartic
     firstParticle.setF(firstParticle.getF()+calculated_force);
     secondParticle.setF(secondParticle.getF()-calculated_force);
 }
+
+void LJCalculator::calculateF_LJ(Particle& firstParticle, Particle& secondParticle, double& sigma, double& epsilon, double& L2Norm) {
+    //the sixth Power of sigma diveded through the l2-norm above
+    double calculation_step = pow((sigma/L2Norm), 6);
+    //the Force F_ij
+    std::array<double, 3> calculated_force = ((-24*epsilon)/pow(L2Norm, 2))*(calculation_step-2*pow(calculation_step, 2))*(firstParticle.getX()-secondParticle.getX()); 
+
+    //adding the force with correct sign on the Particles
+    firstParticle.setF(firstParticle.getF()+calculated_force);
+    secondParticle.setF(secondParticle.getF()-calculated_force);
+  }

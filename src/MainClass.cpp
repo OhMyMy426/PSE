@@ -5,11 +5,13 @@
 #include "Generator.h"
 #include "ParticleContainer.h"
 #include "Particle.h"
-#include "Simulator.h"
+#include "Week2Simulator.h"
 #include <unordered_map>
 #include <iostream>
-#include "MolSim.h"
-#include"spdlog/spdlog.h"
+#include "Week1Simulator.h"
+#include "spdlog/spdlog.h"
+#include "LinkedCellContainer2D.h"
+ 
 
 
 //This is the Main Class of the new Project. From here, the simulation of the first and second homework can be started
@@ -54,8 +56,8 @@ int main(int argc, char *argsv[]) {
                 ParticleContainer particleContainer(particles, particle_counter);
                 InputReader inputReader;
                 inputReader.firstWeekInput(end_time, delta_t, particleContainer);
-                MolSim molSim;
-                molSim.firstWeek(particleContainer, end_time, delta_t);
+                Week1Simulator molSim;
+                molSim.runSimulation(particleContainer, end_time, delta_t);
             }
             break;
         case 2: {
@@ -80,10 +82,63 @@ int main(int argc, char *argsv[]) {
                 //Call the Generator, giving us the Particles out of the Cuboids the user gave us
                 particleGenerator.initialise(cuboids, particleContainer);
                 //Construct our Simulator and run the Simulation with the given Parameters
-                Simulator simulator;
+                Week2Simulator simulator;
                 simulator.runSimulation(particleContainer, end_time, delta_t, epsilon, sigma);
+                break;
         }
+        case 3: {
+            std::array<double, 3>domainSize = {8.0, 8.0, 1.0};
+            LinkedCellContainer2D lck(domainSize, 2.0);
+            std::cout << "AOC" << std::endl;
+            std::cout << lck.getAmountOfCells().at(0) << std::endl;
+            std::cout << lck.getAmountOfCells().at(1) << std::endl;
+            std::cout << lck.getAmountOfCells().at(2) << std::endl;
+            std::cout << "CS" << std::endl;
+            std::cout << lck.getCellSize().at(0) << std::endl;
+            std::cout << lck.getCellSize().at(1) << std::endl;
+            std::cout << lck.getCellSize().at(2) << std::endl;
+            std::cout << "Corners" << std::endl;
+            for (int i = 0; i < (int)lck.getCornerCells().size(); ++i) {
+                std::cout << lck.getCornerCells().at(i) << std::endl;
+            }
+            std::cout << "Up" << std::endl;
+            for (int i = 0; i < (int)lck.getUpperBorderCells().size(); ++i) {
+                std::cout << lck.getUpperBorderCells().at(i) << std::endl;
+            }
+            std::cout << "Left" << std::endl;
+            for (int i = 0; i < (int) lck.getLeftBorderCells().size(); ++i) {
+                std::cout << lck.getLeftBorderCells().at(i) << std::endl;
+            }
+            std::cout << "Low" << std::endl;
+            for (int i = 0; i < (int)lck.getLowerBorderCells().size(); ++i) {
+                std::cout << lck.getLowerBorderCells().at(i) << std::endl;
+            }
+            std::cout << "Right" << std::endl;
+            for (int i = 0; i < (int)lck.getRightBorderCells().size(); ++i) {
+                std::cout << lck.getRightBorderCells().at(i) << std::endl;
+            }
+            std::vector<Particle> testVector;
+            testVector.emplace_back(Particle(0));
+            testVector.emplace_back(Particle(0));
+            testVector.emplace_back(Particle(0));
+            testVector.emplace_back(Particle(0));
+            testVector[0].setX({7.0, 1.0, 0.0});
+            testVector[1].setX({5.0, 3.0, 0.0});
+            testVector[2].setX({1.0, 5.0, 0.0});
+            testVector[3].setX({7.0, 7.0, 0.0});
+            lck.initialiseCells(testVector);
+            for (size_t i = 0; i < lck.getLinkedCells().size(); i++)
+            {
+                if (!lck.getLinkedCells().at(i).empty()) {
+                         std::cout << i << " : " << lck.getLinkedCells().at(i).empty() << std::endl;
+                }
+        
+            }
+            testVector.resize(0);
+            std::cout << "After cleanup!" << std::endl;
             break;
+        }
+            
         default: 
         spdlog::warn("Bad week-input, start the program again please and choose either 1 or 2!!!");
            
