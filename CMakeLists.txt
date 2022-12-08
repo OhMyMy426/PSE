@@ -184,7 +184,7 @@ MACRO( XSD_SCHEMA NAME src/input.xsd )
 	# destination file path sans any extension and then build paths to the
 	# generated files.
 	#
-	GET_FILENAME_COMPONENT( xs_FILE "${FILE}" NAME_WE )
+	GET_FILENAME_COMPONENT( xs_FILE "${src/input.xsd}" NAME_WE )
 	SET( xs_CXX "${CMAKE_CURRENT_BINARY_DIR}/${xs_FILE}.cxx" )
 	SET( xs_HXX "${CMAKE_CURRENT_BINARY_DIR}/${xs_FILE}.hxx" )
 	SET( xs_IXX "${CMAKE_CURRENT_BINARY_DIR}/${xs_FILE}.ixx" )
