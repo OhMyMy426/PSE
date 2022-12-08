@@ -37,7 +37,7 @@
 // End prologue.
 
 #include <xsd/cxx/pre.hxx>
-
+#include <memory>
 #include "vtk-unstructured.h"
 
 // DataArrayList_t

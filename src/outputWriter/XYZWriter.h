@@ -13,6 +13,9 @@
 #include <list>
 #include <unordered_map>
 
+
+#include <memory>
+
 namespace outputWriter {
 
 class XYZWriter {

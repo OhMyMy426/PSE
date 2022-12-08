@@ -14,10 +14,12 @@
 #include <vector>
 #include "Cuboid.h"
 
-
+#include <memory>
 #include <unordered_map>
 #include "ParticleContainer.h"
 #include"spdlog/spdlog.h"
+#include "input.hxx"
+#include "../libs/libxsd/xsd/cxx/xml/dom/auto-ptr.hxx"
 
 
 FileReader::FileReader() = default;
@@ -98,7 +100,7 @@ void FileReader::readFile(ParticleContainer& particleContainer, const char* file
  * @param CuboidVektor A Vektor of cuboids in that the cuboids specified in the file should be added to
  * @param filename The filename of the inputfile
  */
-void FileReader::readFileCuboids(std::vector<Cuboid>& CuboidVektor, const char* filename) { //changed FileReader arguments
+void FileReader::readFileCuboids(std::vector<Cuboid>& CuboidVektor, std::auto_ptr<input> h) { //changed FileReader arguments
   std::array<double, 3> leftLowerCorner;
   std::array<int, 3> amoutOfParticles;
   double meshWidth;
@@ -108,7 +110,7 @@ void FileReader::readFileCuboids(std::vector<Cuboid>& CuboidVektor, const char* 
   int dimensions = 0;
   int num_particles;
 
-  std::ifstream input_file(filename);
+  std::ifstream input_file(h ->inputfile ());
   std::string tmp_string;
 
   if (input_file.is_open()) {
@@ -170,7 +172,7 @@ void FileReader::readFileCuboids(std::vector<Cuboid>& CuboidVektor, const char* 
       spdlog::info("Read line: {}",tmp_string);
     }
   } else {
-     spdlog::info("Error: could not open file {}. The program will terminate now!",filename);
+     spdlog::info("Error: could not open file {}. The program will terminate now!",h->inputfile ());
     exit(-1);
   }
 }

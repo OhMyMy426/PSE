@@ -6,12 +6,17 @@
 #include "ParticleContainer.h"
 #include "Particle.h"
 #include"spdlog/spdlog.h"
+#include <memory>
+#include "../libs/libxsd/xsd/cxx/xml/dom/auto-ptr.hxx"
+#include "input.hxx"
+
+
 
 InputReader::InputReader() = default;
 
 InputReader::~InputReader() = default;
 
-void InputReader::startInteractiveCommandLine(std::vector<Cuboid>& cuboids, double& end_time, double& delta_t, double& sigma, double& epsilon){
+void InputReader::startInteractiveCommandLine(std::vector<Cuboid>& cuboids, double& end_time, double& delta_t, double& sigma, double& epsilon,std::auto_ptr<input> h){
     std::string inputFile = "";
     FileReader fileReader;
     std::string inputString = "";
@@ -87,7 +92,7 @@ void InputReader::startInteractiveCommandLine(std::vector<Cuboid>& cuboids, doub
                 spdlog::info("Please input a file: ");               
                 std::cin >> inputFile;
                 const char* inputFilePointer = inputFile.c_str();
-                fileReader.readFileCuboids(cuboids, inputFilePointer);
+                fileReader.readFileCuboids(cuboids, h);
                 spdlog::info("Particles read!" );
                 
                     }

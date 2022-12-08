@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<input xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="input.xsd">
+    <inputfile>test_out</inputfile>
+    <frequency>20</frequency>
+    <delta_t>0.05</delta_t>
+    <end_t>5</end_t>
+    <outputfile>test_in</outputfile>
+</input>

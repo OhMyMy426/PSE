@@ -10,6 +10,14 @@
 #include <iostream>
 #include "MolSim.h"
 #include"spdlog/spdlog.h"
+#include"Calculator.h"
+#include <memory>
+#include"LJCalculator.h"
+
+
+#include "input.hxx"
+#include "input.cxx"
+#include "../libs/libxsd/xsd/cxx/xml/dom/auto-ptr.hxx"
 
 
 //This is the Main Class of the new Project. From here, the simulation of the first and second homework can be started
@@ -17,6 +25,10 @@
 
 int main(int argc, char *argsv[]) {
 
+
+    spdlog::info("hi {}");
+
+    std::auto_ptr<input> h (input_(argsv[2]));
 
 
 
@@ -62,13 +74,16 @@ int main(int argc, char *argsv[]) {
                 //Initialisation of the necessary Variables for the command line for week two
                 std::vector<Cuboid> cuboids {}; 
                 Generator particleGenerator;
-                double end_time = 5;
-                double delta_t = 0.0002;
+               double end_time = h->end_t();
+               double delta_t=h->delta_t();
+
+               // double end_time = 5;
+               // double delta_t = 0.0002;
                 double sigma = 1;
                 double epsilon = 5;
                 //calling of the command line
                 InputReader inputReader;
-                inputReader.startInteractiveCommandLine(cuboids, end_time, delta_t, sigma, epsilon);
+                inputReader.startInteractiveCommandLine(cuboids, end_time, delta_t, sigma, epsilon,h);
                 if(cuboids.size() == 0) {
                 spdlog::error("No Particles set up! Please set up particles! The program will end now");
                         exit(-1);

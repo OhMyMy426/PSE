@@ -11,6 +11,7 @@
 #include <unordered_map>
 #include <iostream>
 
+
 namespace outputWriter {
 
 XYZWriter::XYZWriter() = default;

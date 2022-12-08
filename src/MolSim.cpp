@@ -1,10 +1,10 @@
 
-#include "FileReader.h"
+
 #include "outputWriter/XYZWriter.h"
 #include "outputWriter/VTKWriter.h"
 
 #include "utils/ArrayUtils.h"
-
+//#include "FileReader.h"
 #include <iostream>
 #include <list>
 #include <string>
@@ -15,6 +15,7 @@
 #include "MolSim.h"
 #include"spdlog/spdlog.h"
 
+#include <memory>
 
 MolSim::MolSim() = default;
 

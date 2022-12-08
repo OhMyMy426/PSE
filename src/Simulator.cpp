@@ -9,7 +9,6 @@
 #include <chrono>
 #include"spdlog/spdlog.h"
 
-
 Simulator::Simulator() = default;
 
 Simulator::~Simulator() = default;
