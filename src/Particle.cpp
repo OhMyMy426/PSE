@@ -85,6 +85,17 @@ void Particle::setF(std::array<double, 3> set) {
 void Particle::setOldF(std::array<double, 3> set) {
     old_f = set;
 }
+void Particle::setM(double set) {
+     m = set;
+}
+
+void Particle::setType(int set) {
+    type = set;
+}
+
+int Particle::getType() {
+  return type;
+}
 
 std::string Particle::toString() const {
   std::stringstream stream;

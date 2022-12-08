@@ -6,10 +6,10 @@
     Week3Metadata::Week3Metadata() = default;
     Week3Metadata::~Week3Metadata() = default;
 
-    double Week3Metadata::getEndTime() {return end_time;}
-    double Week3Metadata::getDeltaT() {return delta_t;}
-    double Week3Metadata::getEpsilon() {return epsilon;}
-    double Week3Metadata::getSigma() {return sigma;}
+    double& Week3Metadata::getEndTime() {return end_time;}
+    double& Week3Metadata::getDeltaT() {return delta_t;}
+    double& Week3Metadata::getEpsilon() {return epsilon;}
+    double& Week3Metadata::getSigma() {return sigma;}
     char Week3Metadata::getUpperBoundary() {return upperBoundary;}
     char Week3Metadata::getLowerBoundary() {return lowerBoundary;}
     char Week3Metadata::getLeftBoundary() {return leftBoundary;}

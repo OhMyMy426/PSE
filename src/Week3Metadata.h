@@ -49,10 +49,10 @@ public:
     Week3Metadata();
     virtual ~Week3Metadata();
 
-    double getEndTime();
-    double getDeltaT();
-    double getEpsilon();
-    double getSigma();
+    double& getEndTime();
+    double& getDeltaT();
+    double& getEpsilon();
+    double& getSigma();
     char getUpperBoundary();
     char getLowerBoundary();
     char getLeftBoundary();

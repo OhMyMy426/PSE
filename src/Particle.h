@@ -69,8 +69,11 @@ public:
   void setV(std::array<double, 3> set);
   void setF(std::array<double, 3> set);
   void setOldF(std::array<double, 3> set);
+  void setM(double set);
+  void setType(int set);
 
   double getM() const;
+  int getType();
 
   int getType() const;
 
