@@ -10,6 +10,7 @@
 #include <unordered_map>
 #include "ParticleContainer.h"
 #include"spdlog/spdlog.h"
+#include "LinkedCellContainer2D.h"
 
 //a default Constructor
 Generator::Generator() {
@@ -71,6 +72,36 @@ void Generator::initialise(std::vector<Cuboid>& cuboids, ParticleContainer& part
                     generateBrownianMovement = maxwellBoltzmannDistributedVelocity(n.getBrownianMotionVelocity(), n.getDimensions());
                     particleContainer.getParticles().emplace(map_counter, Particle(position, (n.getInitialVelocity()+generateBrownianMovement), n.getParticleMass(), 0));
                     map_counter++;
+                }
+            }
+        }
+    
+    }
+}
+
+void Generator::initialise(std::vector<Cuboid>& cuboids, std::vector<Particle>& initialiser) {
+    std::array<double, 3> generateBrownianMovement {.0,.0,.0};
+    int particleCounter = 0;
+    for (Cuboid n : cuboids) {
+        int x_size = n.getAmountOfParticles().at(0);
+        int y_size = n.getAmountOfParticles().at(1);
+        int z_size = n.getAmountOfParticles().at(2);
+        particleCounter += x_size * y_size * z_size;
+        }
+        initialiser.reserve(particleCounter);   
+    for (Cuboid n : cuboids) {
+        int x_size = n.getAmountOfParticles().at(0);
+        int y_size = n.getAmountOfParticles().at(1);
+        int z_size = n.getAmountOfParticles().at(2);
+        for (int i{ 0 };i < x_size;++i) {
+            for (int j{ 0 };j < y_size;++j) {
+                for (int k{ 0 };k < z_size;++k) {
+                    std::array<double, 3 > position = n.getLeftLowerCorner();
+                    position.at(0) += i * n.getMeshWidth();
+                    position.at(1) += j * n.getMeshWidth();
+                    position.at(2) += k * n.getMeshWidth();
+                    generateBrownianMovement = maxwellBoltzmannDistributedVelocity(n.getBrownianMotionVelocity(), n.getDimensions());
+                    initialiser.emplace_back(Particle(position, (n.getInitialVelocity()+generateBrownianMovement), n.getParticleMass(), 0));
                 }
             }
         }

@@ -26,6 +26,7 @@ public:
     void initialise(std::vector<Cuboid>& cuboids, ParticleContainer& particleContainer);
     std::vector<Cuboid>& getCuboids();
     std::vector<Particle>& getParticles();
+    void initialise(std::vector<Cuboid>& cuboids, std::vector<Particle>& initialiser);
 };
 
 

@@ -11,6 +11,10 @@
 #include "Week1Simulator.h"
 #include "spdlog/spdlog.h"
 #include "LinkedCellContainer2D.h"
+#include "Week3Metadata.h"
+#include "Week3Simulator.h"
+#include "Cuboid.h"
+#include "FileReader.h"
  
 
 
@@ -41,7 +45,7 @@ int main(int argc, char *argsv[]) {
     {spdlog::set_level(spdlog::level::off);}
     //first, the user is asked for the week he wants to run
     
-    spdlog::info("Hello and welcome to Molecular Simulations. Please choose the week you would like to use. Week one (\'1\') is Simulation of Planets, week two (\'2\') Lennard-Jones-Potential");
+    spdlog::info("Hello and welcome to Molecular Simulations. Please choose the week you would like to use. Week one (\'1\') is Simulation of Planets, week two (\'2\') Lennard-Jones-Potential, week three (\'3\') linkedCells.");
     
     int chosenWeek = 0;
     std::cin >> chosenWeek;
@@ -87,55 +91,25 @@ int main(int argc, char *argsv[]) {
                 break;
         }
         case 3: {
+/*            std::array<double, 3>domainSize = {180.0, 90.0, 1.0};
+            LinkedCellContainer2D lck(domainSize, 3.0);
+            std::vector<Particle> initialiser;
+            Generator generator;
+            std::vector<Cuboid> cuboids;
+            FileReader fileReader;
+            const char* fileName = "input/week2Data.txt";
+            fileReader.readFileCuboids(cuboids, fileName);
+            generator.initialise(cuboids, initialiser);
+            lck.initialiseCells(initialiser);
+            Week3Metadata week3Data(20.0, 0.00005, 5, 1, 'x', 'x', 'x', 'x', 'm', 'N');*/
             std::array<double, 3>domainSize = {8.0, 8.0, 1.0};
             LinkedCellContainer2D lck(domainSize, 2.0);
-            std::cout << "AOC" << std::endl;
-            std::cout << lck.getAmountOfCells().at(0) << std::endl;
-            std::cout << lck.getAmountOfCells().at(1) << std::endl;
-            std::cout << lck.getAmountOfCells().at(2) << std::endl;
-            std::cout << "CS" << std::endl;
-            std::cout << lck.getCellSize().at(0) << std::endl;
-            std::cout << lck.getCellSize().at(1) << std::endl;
-            std::cout << lck.getCellSize().at(2) << std::endl;
-            std::cout << "Corners" << std::endl;
-            for (int i = 0; i < (int)lck.getCornerCells().size(); ++i) {
-                std::cout << lck.getCornerCells().at(i) << std::endl;
-            }
-            std::cout << "Up" << std::endl;
-            for (int i = 0; i < (int)lck.getUpperBorderCells().size(); ++i) {
-                std::cout << lck.getUpperBorderCells().at(i) << std::endl;
-            }
-            std::cout << "Left" << std::endl;
-            for (int i = 0; i < (int) lck.getLeftBorderCells().size(); ++i) {
-                std::cout << lck.getLeftBorderCells().at(i) << std::endl;
-            }
-            std::cout << "Low" << std::endl;
-            for (int i = 0; i < (int)lck.getLowerBorderCells().size(); ++i) {
-                std::cout << lck.getLowerBorderCells().at(i) << std::endl;
-            }
-            std::cout << "Right" << std::endl;
-            for (int i = 0; i < (int)lck.getRightBorderCells().size(); ++i) {
-                std::cout << lck.getRightBorderCells().at(i) << std::endl;
-            }
-            std::vector<Particle> testVector;
-            testVector.emplace_back(Particle(0));
-            testVector.emplace_back(Particle(0));
-            testVector.emplace_back(Particle(0));
-            testVector.emplace_back(Particle(0));
-            testVector[0].setX({7.0, 1.0, 0.0});
-            testVector[1].setX({5.0, 3.0, 0.0});
-            testVector[2].setX({1.0, 5.0, 0.0});
-            testVector[3].setX({7.0, 7.0, 0.0});
-            lck.initialiseCells(testVector);
-            for (size_t i = 0; i < lck.getLinkedCells().size(); i++)
-            {
-                if (!lck.getLinkedCells().at(i).empty()) {
-                         std::cout << i << " : " << lck.getLinkedCells().at(i).empty() << std::endl;
-                }
-        
-            }
-            testVector.resize(0);
-            std::cout << "After cleanup!" << std::endl;
+            std::vector<Particle> initialiser;
+            initialiser.emplace_back(Particle({5.0,5.0,0}, {20.0,.0,.0}, 1, 0));
+            lck.initialiseCells(initialiser);
+            Week3Metadata week3Data(100.0, 0.002, 5, 1, 'x', 'x', 'x', 'x', 'm', 'N');
+            Week3Simulator simulator;
+            simulator.runSimulation(lck, week3Data);
             break;
         }
             

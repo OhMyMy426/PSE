@@ -70,7 +70,7 @@ LinkedCellContainer2D::LinkedCellContainer2D(std::array<double, 3>& domainsize_a
             for (int j = 1; j < amountOfCells.at(0)-1; ++j)
                 { 
                     lowerHaloCells.emplace_back(j);//first row
-                    upperHaloCells.emplace_back((amountOfCells.at(1)-1)+j);//last row
+                    upperHaloCells.emplace_back((amountOfCells.at(1)-1)*amountOfCells.at(0)+j);//last row
                 }
             for (int j = 1; j < amountOfCells.at(1)-1; ++j)
                 { 
@@ -209,6 +209,7 @@ void LinkedCellContainer2D::initialiseCells(std::vector<Particle>& particleVecto
         int Yindex = particleToMap.getX().at(1)/cellSize.at(1); // the y-index of the particle, after halo cells
         linkedCells.at(Xindex + amountOfCells.at(0)*Yindex).emplace_front(particleToMap);//add the particle to the corresponding forward list
     }
+    
     
 }
 

@@ -5,6 +5,7 @@
 #include "outputWriter/VTKWriter.h"
 #include <string>
 #include "ParticleContainer.h"
+#include "LinkedCellContainer2D.h"
 
 OutputWriter::OutputWriter() = default;
 
@@ -28,5 +29,22 @@ void OutputWriter::VTKOutput(ParticleContainer& particleContainer, int iteration
 
 }
 
+void OutputWriter::VTKOutput(LinkedCellContainer2D& linkedCellContainer, int iteration, std::string out_name) {
+    outputWriter::VTKWriter writer;
+    int counter = 0;
+    for (auto x: linkedCellContainer.getLinkedCells()){
+      for(auto y: x){
+        ++counter;
+      }
+    }
+    writer.initializeOutput(counter);
+    for (auto x: linkedCellContainer.getLinkedCells()){
+      for(auto y: x){
+        writer.plotParticle(y);     
+        }
+    }
+  writer.writeFile(out_name, iteration);
+
+}
 
 

@@ -1,6 +1,7 @@
 #include "Calculator.h"
 #include "Particle.h"
 #include "utils/ArrayUtils.h"
+#include <iostream>
 
 Calculator::Calculator() = default;
 

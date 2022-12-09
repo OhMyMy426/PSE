@@ -9,7 +9,8 @@
 #include <vector>
 #include <cmath>
 #include "utils/ArrayUtils.h"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <forward_list>
 
   Week3Simulator::Week3Simulator() = default;
   Week3Simulator::~Week3Simulator() = default;
@@ -66,7 +67,7 @@ void Week3Simulator::runSimulation(LinkedCellContainer2D& linkedCellContainer, W
 
 
 
-
+    
 
 
     //_______________________________________________________________________Simulation ________________________________________________________________
@@ -77,37 +78,83 @@ void Week3Simulator::runSimulation(LinkedCellContainer2D& linkedCellContainer, W
     //calculate new x
     for (auto& x : linkedCellContainer.getLinkedCells()) {
         for (auto& y : x) {
-            calculator.calculateX(y, week3data.getDeltaT());
+            calculator.calculateX(y, week3data.getDeltaT()); 
         }
     }
+    
 
 //the remapping -> if a particle is outside his cell, it gets inserted in the one it belongs to and gets erased from the original one
-    for(int i = 0; i < (int) linkedCellContainer.getLinkedCells().size(); ++i) {
+    for(int i = 0; i < (int) linkedCellContainer.getLinkedCells().size(); ++i) {                  
         for(auto& y: linkedCellContainer.getLinkedCells().at(i)) {
-        int Xindex = y.getX().at(0)/linkedCellContainer.getCellSize().at(0); 
-        int Yindex = y.getX().at(1)/linkedCellContainer.getCellSize().at(1); 
-        if (Xindex + linkedCellContainer.getAmountOfCells().at(0)*Yindex != i) {
-            linkedCellContainer.getLinkedCells().at(Xindex + linkedCellContainer.getAmountOfCells().at(0)*Yindex).emplace_front(y); 
-            y.setType(-1); 
-        }
-        }
-        auto j = linkedCellContainer.getLinkedCells().at(i).before_begin();
-        while (j != linkedCellContainer.getLinkedCells().at(i).end()) {
-            auto k = ++j;
-            while(k -> getType() == -1) {
-                linkedCellContainer.getLinkedCells().at(i).erase_after(j);
+            int Xindex = (int) (y.getX().at(0)/linkedCellContainer.getCellSize().at(0)); 
+            int Yindex = (int) (y.getX().at(1)/linkedCellContainer.getCellSize().at(1)); 
+                if (Xindex + linkedCellContainer.getAmountOfCells().at(0)*Yindex != i) {                     
+                    auto tmpVektor =  linkedCellContainer.getLinkedCells();
+                    tmpVektor.at((int) (Xindex + linkedCellContainer.getAmountOfCells().at(0)*Yindex)).emplace_front(Particle(y));
+                    std::forward_list<Particle> mediumList;
+                    for (auto z: linkedCellContainer.getLinkedCells().at(i)) {
+                        if (!(z == y)) mediumList.emplace_front(z);
+                    }  
+                    tmpVektor.at(i) = mediumList;
+                    linkedCellContainer.setLinkedList(tmpVektor); 
+                }
             }
-            ++j;
+        }
+    
+    
+    //remapped all particles to the new cells -> here map reflective way kicks
+    //check each halo individually -> assuming small enough timesteps, there should not be particles in the corners of the halo ring, so we jsut check the sides
+    if (week3data.getLeftBoundary() == 'x' && reflexMode == 'm') {
+        for(auto x: linkedCellContainer.getLeftHaloCells()) {
+            for (auto y: linkedCellContainer.getLinkedCells().at(x)){
+                double distanceToBorder = linkedCellContainer.getCellSize().at(0) - y.getX().at(0);
+                Particle mirrorParticle = Particle(y);
+                std::array<double,3> addedDistance = {2*distanceToBorder, .0, .0};
+                mirrorParticle.setV((-1)*mirrorParticle.getV());
+                mirrorParticle.setX(mirrorParticle.getX() + addedDistance);
+                linkedCellContainer.getLinkedCells().at(x+1).emplace_front(mirrorParticle);
+            }
         }
     }
-
-    //remapped all particles to the new cells -> here map reflective way kicks
-    //check each border individually -> assuming small enough timesteps, there should not be particles in the corners of the halo ring, so we jsut check the sides
-    
-
+    if (week3data.getRightBoundary() == 'x' && reflexMode == 'm') {
+        for(auto x: linkedCellContainer.getRightHaloCells()) {
+            for (auto y: linkedCellContainer.getLinkedCells().at(x)){
+                double distanceToBorder = y.getX().at(0) - linkedCellContainer.getCellSize().at(0) * (linkedCellContainer.getAmountOfCells().at(0) - 1);
+                Particle mirrorParticle = Particle(y);
+                std::array<double,3> addedDistance = {2*distanceToBorder, .0, .0};
+                mirrorParticle.setV((-1)*mirrorParticle.getV());
+                mirrorParticle.setX(mirrorParticle.getX() - addedDistance);
+                linkedCellContainer.getLinkedCells().at(x-1).emplace_front(mirrorParticle);
+            }
+        }
+    }
+    if (week3data.getLowerBoundary() == 'x' && reflexMode == 'm') {
+        for(auto x: linkedCellContainer.getLowerHaloCells()) {
+            for (auto y: linkedCellContainer.getLinkedCells().at(x)){
+                double distanceToBorder = linkedCellContainer.getCellSize().at(1) - y.getX().at(1);
+                Particle mirrorParticle = Particle(y);
+                std::array<double,3> addedDistance = {.0, 2*distanceToBorder, .0};
+                mirrorParticle.setV((-1)*mirrorParticle.getV());
+                mirrorParticle.setX(mirrorParticle.getX() + addedDistance);
+                linkedCellContainer.getLinkedCells().at(x+linkedCellContainer.getAmountOfCells().at(0)).emplace_front(mirrorParticle);
+            }
+        }
+    }
+    if (week3data.getUpperBoundary() == 'x' && reflexMode == 'm') {
+        for(auto x: linkedCellContainer.getUpperHaloCells()) {
+            for (auto y: linkedCellContainer.getLinkedCells().at(x)){
+                double distanceToBorder = y.getX().at(1) - linkedCellContainer.getCellSize().at(1) * (linkedCellContainer.getAmountOfCells().at(1) - 1);
+                Particle mirrorParticle = Particle(y);
+                std::array<double,3> addedDistance = {.0, 2*distanceToBorder, .0};
+                mirrorParticle.setV((-1)*mirrorParticle.getV());
+                mirrorParticle.setX(mirrorParticle.getX() - addedDistance);
+                linkedCellContainer.getLinkedCells().at(x-linkedCellContainer.getAmountOfCells().at(0)).emplace_front(mirrorParticle);
+            }
+        }
+    }
     //delete the halo cells at this point. every cell needed should be in the border cells, regardless of the boundry condition or mode
     linkedCellContainer.deleteHalo();
-    
+
     //set the f to old_f
     for (auto& x : linkedCellContainer.getLinkedCells()) {
         for (auto& y : x) {
@@ -126,8 +173,13 @@ void Week3Simulator::runSimulation(LinkedCellContainer2D& linkedCellContainer, W
     //same with the edge cells
     //then a particle is placed that helps with the reflection by mirroring the other particles path and guiding it in a curve (so not a straight "bounce")
     //
+
+
     for (int i = 0; i < (int) linkedCellContainer.getLinkedCells().size(); ++i){    
-        //we ignore halo cells
+        //we ignore halo cells and empty cells
+         if (linkedCellContainer.getLinkedCells().at(i).empty() == 1){
+            continue;
+         } 
          if (std::find(linkedCellContainer.getAllHaloCells().begin(), linkedCellContainer.getAllHaloCells().end(), i) != linkedCellContainer.getAllHaloCells().end()) {
             continue;
          }
@@ -135,10 +187,13 @@ void Week3Simulator::runSimulation(LinkedCellContainer2D& linkedCellContainer, W
         //handle Corner Cells
         //left lower corner first
             if (i == linkedCellContainer.getCornerCells().at(0)){
-                for (auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != linkedCellContainer.getLinkedCells().at(i).end(); ++z)
+                auto iterator = linkedCellContainer.getLinkedCells().at(i).begin();
+                for(auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != linkedCellContainer.getLinkedCells().at(i).end(); ++z) ++iterator;
+                for (auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != iterator; ++z)
                 {
-                for (auto j = ++z; j != linkedCellContainer.getLinkedCells().at(i).end(); ++j)
+                for (auto j = z; j != linkedCellContainer.getLinkedCells().at(i).end(); ++j)
                  {
+                    if (j == z) continue;
                   calculator.calculateF_LJ(*z, *j, week3data.getSigma(), week3data.getEpsilon());
                  }
                 }
@@ -202,13 +257,17 @@ void Week3Simulator::runSimulation(LinkedCellContainer2D& linkedCellContainer, W
             }
             //right lower corner
             else if (i == linkedCellContainer.getCornerCells().at(1)){
-                for (auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != linkedCellContainer.getLinkedCells().at(i).end(); ++z)
-                {
-                for (auto j = ++z; j != linkedCellContainer.getLinkedCells().at(i).end(); ++j)
+                auto iterator = linkedCellContainer.getLinkedCells().at(i).begin();
+                for(auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != linkedCellContainer.getLinkedCells().at(i).end(); ++z) ++iterator;
+                for (auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != iterator; ++z)
+                {                    
+                for (auto j = z; j != linkedCellContainer.getLinkedCells().at(i).end(); ++j)
                  {
+                    if (j == z) continue;
                   calculator.calculateF_LJ(*z, *j, week3data.getSigma(), week3data.getEpsilon());
                  }
                 }
+                
             //the other cells:
               for (auto& x: linkedCellContainer.getLinkedCells().at(i))
                 {
@@ -230,7 +289,7 @@ void Week3Simulator::runSimulation(LinkedCellContainer2D& linkedCellContainer, W
                 if (week3data.getRightBoundary() == 'x' && reflexMode == 'r'){
                  //now the reflective border. 
                     for (auto& x: linkedCellContainer.getLinkedCells().at(i)) {
-                        double distanceToBorder = ((linkedCellContainer.getAmountOfCells().at(0)-2) * linkedCellContainer.getCellSize().at(0) - x.getX().at(0));
+                        double distanceToBorder = ((linkedCellContainer.getAmountOfCells().at(0)-1) * linkedCellContainer.getCellSize().at(0) - x.getX().at(0));
                         //if the distance is below the cutoff
                         if (distanceToBorder <= cutoff) {
                             //we place a second particle in the halo, mirrored along the top border and with the same m
@@ -265,10 +324,13 @@ void Week3Simulator::runSimulation(LinkedCellContainer2D& linkedCellContainer, W
             }
             //left upper corner
             else if (i == linkedCellContainer.getCornerCells().at(2)){
-                for (auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != linkedCellContainer.getLinkedCells().at(i).end(); ++z)
+                auto iterator = linkedCellContainer.getLinkedCells().at(i).begin();
+                for(auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != linkedCellContainer.getLinkedCells().at(i).end(); ++z) ++iterator;
+                for (auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != iterator; ++z)
                 {
-                for (auto j = ++z; j != linkedCellContainer.getLinkedCells().at(i).end(); ++j)
+                for (auto j = z; j != linkedCellContainer.getLinkedCells().at(i).end(); ++j)
                  {
+                    if (j == z) continue;
                   calculator.calculateF_LJ(*z, *j, week3data.getSigma(), week3data.getEpsilon());
                  }
                 }
@@ -301,7 +363,7 @@ void Week3Simulator::runSimulation(LinkedCellContainer2D& linkedCellContainer, W
             if (week3data.getUpperBoundary() == 'x' && reflexMode == 'r'){
             //now the reflective border. since it is the upper border, the start of the new cell above is (amountOfCells.at(1)-2)*cellsize.at(1)
                 for (auto& x: linkedCellContainer.getLinkedCells().at(i)) {
-                    double distanceToBorder = (linkedCellContainer.getAmountOfCells().at(1)-2)*linkedCellContainer.getCellSize().at(1)-(x.getX().at(1));
+                    double distanceToBorder = (linkedCellContainer.getAmountOfCells().at(1)-1)*linkedCellContainer.getCellSize().at(1)-(x.getX().at(1));
                     //if the distance is below the cutoff
                     if (distanceToBorder <= cutoff) {
                         //we place a second particle in the halo, mirrored along the top border and with the same m
@@ -318,17 +380,20 @@ void Week3Simulator::runSimulation(LinkedCellContainer2D& linkedCellContainer, W
             }
             //right upper corner
             else if (i == linkedCellContainer.getCornerCells().at(3)){
-                for (auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != linkedCellContainer.getLinkedCells().at(i).end(); ++z)
+                auto iterator = linkedCellContainer.getLinkedCells().at(i).begin();
+                for(auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != linkedCellContainer.getLinkedCells().at(i).end(); ++z) ++iterator;
+                for (auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != iterator; ++z)
                 {
-                for (auto j = ++z; j != linkedCellContainer.getLinkedCells().at(i).end(); ++j)
+                for (auto j = z; j != linkedCellContainer.getLinkedCells().at(i).end(); ++j)
                  {
+                    if (j == z) continue;
                   calculator.calculateF_LJ(*z, *j, week3data.getSigma(), week3data.getEpsilon());
                  }
                 }
             if (week3data.getUpperBoundary() == 'x' && reflexMode == 'r'){
             //now the reflective border. since it is the upper border, the start of the new cell above is (amountOfCells.at(1)-2)*cellsize.at(1)
                 for (auto& x: linkedCellContainer.getLinkedCells().at(i)) {
-                    double distanceToBorder = (linkedCellContainer.getAmountOfCells().at(1)-2)*linkedCellContainer.getCellSize().at(1)-(x.getX().at(1));
+                    double distanceToBorder = (linkedCellContainer.getAmountOfCells().at(1)-1)*linkedCellContainer.getCellSize().at(1)-(x.getX().at(1));
                     //if the distance is below the cutoff
                     if (distanceToBorder <= cutoff) {
                         //we place a second particle in the halo, mirrored along the top border and with the same m
@@ -345,7 +410,7 @@ void Week3Simulator::runSimulation(LinkedCellContainer2D& linkedCellContainer, W
              if (week3data.getRightBoundary() == 'x' && reflexMode == 'r'){
                  //now the reflective border. 
                     for (auto& x: linkedCellContainer.getLinkedCells().at(i)) {
-                        double distanceToBorder = ((linkedCellContainer.getAmountOfCells().at(0)-2) * linkedCellContainer.getCellSize().at(0) - x.getX().at(0));
+                        double distanceToBorder = ((linkedCellContainer.getAmountOfCells().at(0)-1) * linkedCellContainer.getCellSize().at(0) - x.getX().at(0));
                         //if the distance is below the cutoff
                         if (distanceToBorder <= cutoff) {
                             //we place a second particle in the halo, mirrored along the top border and with the same m
@@ -365,10 +430,13 @@ void Week3Simulator::runSimulation(LinkedCellContainer2D& linkedCellContainer, W
          }
          else if (std::find(linkedCellContainer.getUpperBorderCells().begin(), linkedCellContainer.getUpperBorderCells().end(), i) != linkedCellContainer.getUpperBorderCells().end()) {
         //handle upper Border Cell -> everything needed is itself and the cell to the right (since we ignore halo cells rn)
-            for (auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != linkedCellContainer.getLinkedCells().at(i).end(); ++z)
+            auto iterator = linkedCellContainer.getLinkedCells().at(i).begin();
+                for(auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != linkedCellContainer.getLinkedCells().at(i).end(); ++z) ++iterator;
+                for (auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != iterator; ++z)
                 {
-                for (auto j = ++z; j != linkedCellContainer.getLinkedCells().at(i).end(); ++j)
+                for (auto j = z; j != linkedCellContainer.getLinkedCells().at(i).end(); ++j)
                  {
+                    if (j == z) continue;
                   calculator.calculateF_LJ(*z, *j, week3data.getSigma(), week3data.getEpsilon());
                  }
                 }
@@ -384,7 +452,7 @@ void Week3Simulator::runSimulation(LinkedCellContainer2D& linkedCellContainer, W
             if (week3data.getUpperBoundary() == 'x' && reflexMode == 'r'){
             //now the reflective border. since it is the upper border, the start of the new cell above is (amountOfCells.at(1)-2)*cellsize.at(1)
                 for (auto& x: linkedCellContainer.getLinkedCells().at(i)) {
-                    double distanceToBorder = (linkedCellContainer.getAmountOfCells().at(1)-2)*linkedCellContainer.getCellSize().at(1)-(x.getX().at(1));
+                    double distanceToBorder = (linkedCellContainer.getAmountOfCells().at(1)-1)*linkedCellContainer.getCellSize().at(1)-(x.getX().at(1));
                     //if the distance is below the cutoff
                     if (distanceToBorder <= cutoff) {
                         //we place a second particle in the halo, mirrored along the top border and with the same m
@@ -402,10 +470,14 @@ void Week3Simulator::runSimulation(LinkedCellContainer2D& linkedCellContainer, W
          }
          else if (std::find(linkedCellContainer.getLowerBorderCells().begin(), linkedCellContainer.getLowerBorderCells().end(), i) != linkedCellContainer.getLowerBorderCells().end()) {
             //handle lower Border Cell -> nothing really changes but with the reflection
-            for (auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != linkedCellContainer.getLinkedCells().at(i).end(); ++z)
+                        
+            auto iterator = linkedCellContainer.getLinkedCells().at(i).begin();
+                for(auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != linkedCellContainer.getLinkedCells().at(i).end(); ++z) ++iterator;
+                for (auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != iterator; ++z)
                 {
-                for (auto j = ++z; j != linkedCellContainer.getLinkedCells().at(i).end(); ++j)
+                for (auto j = z; j != linkedCellContainer.getLinkedCells().at(i).end(); ++j)
                  {
+                    if (j == z) continue;
                   calculator.calculateF_LJ(*z, *j, week3data.getSigma(), week3data.getEpsilon());
                  }
                 }
@@ -459,10 +531,13 @@ void Week3Simulator::runSimulation(LinkedCellContainer2D& linkedCellContainer, W
          }
          else if (std::find(linkedCellContainer.getLeftBorderCells().begin(), linkedCellContainer.getLeftBorderCells().end(), i) != linkedCellContainer.getLeftBorderCells().end()) {
             //handle left Border Cell -> everything but left upper cell is important
-            for (auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != linkedCellContainer.getLinkedCells().at(i).end(); ++z)
+            auto iterator = linkedCellContainer.getLinkedCells().at(i).begin();
+                for(auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != linkedCellContainer.getLinkedCells().at(i).end(); ++z) ++iterator;
+                for (auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != iterator; ++z)
                 {
-                for (auto j = ++z; j != linkedCellContainer.getLinkedCells().at(i).end(); ++j)
+                for (auto j = z; j != linkedCellContainer.getLinkedCells().at(i).end(); ++j)
                  {
+                    if (j == z) continue;
                   calculator.calculateF_LJ(*z, *j, week3data.getSigma(), week3data.getEpsilon());
                  }
                 }
@@ -510,10 +585,13 @@ void Week3Simulator::runSimulation(LinkedCellContainer2D& linkedCellContainer, W
          
          else if (std::find(linkedCellContainer.getRightBorderCells().begin(), linkedCellContainer.getRightBorderCells().end(), i) != linkedCellContainer.getRightBorderCells().end()) {
             //handle right Border Cell
-             for (auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != linkedCellContainer.getLinkedCells().at(i).end(); ++z)
+             auto iterator = linkedCellContainer.getLinkedCells().at(i).begin();
+                for(auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != linkedCellContainer.getLinkedCells().at(i).end(); ++z) ++iterator;
+                for (auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != iterator; ++z)
                 {
-                for (auto j = ++z; j != linkedCellContainer.getLinkedCells().at(i).end(); ++j)
+                for (auto j = z; j != linkedCellContainer.getLinkedCells().at(i).end(); ++j)
                  {
+                    if (j == z) continue;
                   calculator.calculateF_LJ(*z, *j, week3data.getSigma(), week3data.getEpsilon());
                  }
                 }
@@ -538,7 +616,7 @@ void Week3Simulator::runSimulation(LinkedCellContainer2D& linkedCellContainer, W
                 if (week3data.getRightBoundary() == 'x' && reflexMode == 'r'){
                  //now the reflective border. 
                     for (auto& x: linkedCellContainer.getLinkedCells().at(i)) {
-                        double distanceToBorder = ((linkedCellContainer.getAmountOfCells().at(0)-2) * linkedCellContainer.getCellSize().at(0) - x.getX().at(0));
+                        double distanceToBorder = ((linkedCellContainer.getAmountOfCells().at(0)-1) * linkedCellContainer.getCellSize().at(0) - x.getX().at(0));
                         //if the distance is below the cutoff
                         if (distanceToBorder <= cutoff) {
                             //we place a second particle in the halo, mirrored along the top border and with the same m
@@ -556,10 +634,13 @@ void Week3Simulator::runSimulation(LinkedCellContainer2D& linkedCellContainer, W
          else {
             //a "normal" Cell -> calculate Force with others in the cell and the cells to the right, above, left above and right above
             //multiply with all other Particles in the same cell that that particle wasn´t multiplied yet
-            for (auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != linkedCellContainer.getLinkedCells().at(i).end(); ++z)
+            auto iterator = linkedCellContainer.getLinkedCells().at(i).begin();
+                for(auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != linkedCellContainer.getLinkedCells().at(i).end(); ++z) ++iterator;
+                for (auto z = linkedCellContainer.getLinkedCells().at(i).begin(); z != iterator; ++z)
                 {
-                for (auto j = ++z; j != linkedCellContainer.getLinkedCells().at(i).end(); ++j)
+                for (auto j = z; j != linkedCellContainer.getLinkedCells().at(i).end(); ++j)
                  {
+                    if (j == z) continue;
                   calculator.calculateF_LJ(*z, *j, week3data.getSigma(), week3data.getEpsilon());
                  }
                 }
@@ -599,7 +680,7 @@ void Week3Simulator::runSimulation(LinkedCellContainer2D& linkedCellContainer, W
          
     }
 
-
+    
     
     //calculate v
     for (auto& x : linkedCellContainer.getLinkedCells()) {
@@ -611,10 +692,10 @@ void Week3Simulator::runSimulation(LinkedCellContainer2D& linkedCellContainer, W
 
 
     //_______________________________________________Output____________________________________________
-/*    iteration++;
+    iteration++;
     if (iteration % 10 == 0 && timeSelection == 'N') {
-    outputWriter.VTKOutput(particleContainer, iteration, "Simulation2");
-    }*/
+        outputWriter.VTKOutput(linkedCellContainer, iteration, "Simulation3");
+    }
     current_time += week3data.getDeltaT();
     }
     
