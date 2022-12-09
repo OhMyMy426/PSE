@@ -1,4 +1,5 @@
 
+/*
 #include "FileReader.h"
 #include "outputWriter/XYZWriter.h"
 #include "outputWriter/VTKWriter.h"
@@ -16,30 +17,17 @@
 #include"spdlog/spdlog.h"
 
 
-MolSim::MolSim() = default;
 
-MolSim::~MolSim() = default;
 
-/**** forward declaration of the calculation functions ****/
-
-/**s
- * calculate the force for all particles
- */
 void calculateF(ParticleContainer& particleContainer);
 
-/**
- * calculate the position for all particles
- */
+
 void calculateX(ParticleContainer& particleContainer, const double& delta_t);
 
-/**
- * calculate the position for all particles
- */
+
 void calculateV(ParticleContainer& particleContainer, const double& delta_t);
 
-/**
- * plot the particles to a xyz-file
- */
+
 void plotParticles(int iteration, ParticleContainer& particleContainer);
 
 constexpr double start_time = 0;
@@ -168,3 +156,4 @@ void plotParticles(int iteration, ParticleContainer& particleContainer) {
   //writer.plotParticles(particleContainer.getParticles(), out_name, iteration);
 }
 
+*/
