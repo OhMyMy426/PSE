@@ -64,22 +64,27 @@ target_compile_options(MolSim
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)
 
-include(doxygen)
 
-## set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR})
+include(FindDoxygen)
 
-## add_custom_target( doc_doxygen 
-#   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-#    VERBATIM )
+option(ENABLE_DOC "Generates the documentation target" OFF)
+option(BUILD_DOCS "Build doxygen documentation when building all" OFF)
+mark_as_advanced(BUILD_DOCS)
 
-include(doxygen)
+if(ENABLE_DOC)
+if(DOXYGEN_FOUND)
+  
+  configure_file(Doxyfile ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
 
-## set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR})
+  set(DOC_TARGET_NAME "doc_doxygen")
 
-## add_custom_target( doc_doxygen 
-#   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-#    VERBATIM )
+  add_custom_target(${DOC_TARGET_NAME} ${TARGET_ALL}
+      ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+      COMMENT "Generating API documentation" VERBATIM)
 
+endif(DOXYGEN_FOUND)
+endif()
 
 ####    GoogleTest
 # GoogleTest requires at least C++14
